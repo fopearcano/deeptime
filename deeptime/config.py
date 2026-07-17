@@ -157,7 +157,10 @@ class Params:
     Phi_chronal: float = 6.0     # Field mastery needed for chronal [S]
 
     # --- inequality (section 22) -----------------------------------------
-    g_I: float = 0.08            # inequality generation rate       [E]
+    g_I: float = 0.6             # inequality generation rate       [E]
+    omega_E: float = 0.4         # inequality weight, energy CV     [X]
+    omega_L: float = 0.3         # inequality weight, longevity CV  [X]
+    omega_Q: float = 0.3         # inequality weight, computation CV[X]
     redistribution: float = 0.5  # redistribution / universal access[E]
     r_I: float = 0.06            # redistribution effectiveness     [E]
     delta_I: float = 0.03        # inequality relaxation            [E]
@@ -228,6 +231,7 @@ class Params:
     b_W: float = 0.7            # hazard, war damage                [E]
     b_G: float = 1.1            # hazard shield, institutions       [E]
     b_Z: float = 0.5            # hazard shield, archives            [X]
+    b_resil: float = 0.5        # hazard shield, resilience (Lambda)[X]
     collapse_loss: Dict[str, float] = field(
         default_factory=lambda: {
             "P": 0.6, "H": 0.5, "A": 0.4, "E": 0.5, "R": 0.3, "Y": 0.6,

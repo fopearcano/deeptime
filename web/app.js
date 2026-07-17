@@ -150,6 +150,7 @@
   function renderHistory() {
     const d = state.lastRun; if (!d) return;
     const s = d.series;
+    const rp = d.params || state.params;   // the run's own parameters, not live sliders
     // stat tiles
     const lastCivs = d.civ_table || [];
     const bestPhi = lastCivs.reduce((a, c) => c.Phi > a ? c.Phi : a, 0);
@@ -158,8 +159,8 @@
     const tiles = [
       { k: "Peak Kardashev", v: C.fmt(kmax), sub: "energy tier" },
       { k: "Field mastery", v: C.fmt(bestPhi), sub: bestTier.tier || "—" },
-      { k: "Civilizations (end)", v: String(lastCivs.length), sub: "of " + Math.round(state.params.n_civ) + " seeded" },
-      { k: "Sites colonized", v: String(s.n_colonized.length ? s.n_colonized[s.n_colonized.length - 1] : 0), sub: Math.round(state.params.n_nodes) + " total" },
+      { k: "Civilizations (end)", v: String(lastCivs.length), sub: "of " + Math.round(rp.n_civ) + " seeded" },
+      { k: "Sites colonized", v: String(s.n_colonized.length ? s.n_colonized[s.n_colonized.length - 1] : 0), sub: Math.round(rp.n_nodes) + " total" },
       { k: "Historical events", v: String(d.n_events || (d.events ? d.events.length : 0)), sub: "recorded" },
     ];
     $("#stat-row").innerHTML = tiles.map(t =>
@@ -191,7 +192,7 @@
     // keep a stable order
     const orderedKinds = {};
     Object.keys(EVENT_META).forEach(k => { if (usedKinds[k]) orderedKinds[k] = usedKinds[k]; });
-    C.timeline($("#timeline"), { events: d.events || [], tmax: state.params.t_max, kinds: orderedKinds });
+    C.timeline($("#timeline"), { events: d.events || [], tmax: rp.t_max, kinds: orderedKinds });
     $("#timeline-legend").innerHTML = legendHTML(Object.keys(orderedKinds).map(k =>
       ({ swatch: orderedKinds[k].color, label: orderedKinds[k].label })));
   }
