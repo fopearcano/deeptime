@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deeptime-model"
+version = "1.0.0"
+description = "Hybrid stochastic dynamical model of deep-time civilizational evolution"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = ["numpy>=1.23"]
+
+[project.scripts]
+deeptime-server = "deeptime.server:main"
+
+[tool.setuptools]
+packages = ["deeptime"]
+
+[tool.setuptools.package-data]
+deeptime = []

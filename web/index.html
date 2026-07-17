@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deep-Time Civilizational Evolution</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">&#9673;</div>
+      <div class="brand-text">
+        <h1>Deep-Time Civilizational Evolution</h1>
+        <p>A hybrid stochastic dynamical model of civilizations across deep time &mdash; ordinary
+           spacetime coupled to a navigable <em>Field Ocean</em>.</p>
+      </div>
+    </div>
+    <div class="run-controls">
+      <button id="btn-run" class="btn btn-primary">Run one history</button>
+      <button id="btn-mc" class="btn">Run Monte Carlo</button>
+      <span id="status" class="status"></span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <h2>Parameters</h2>
+        <button id="btn-reset" class="btn btn-tiny" title="Restore defaults">Reset</button>
+      </div>
+      <p class="sidebar-hint">
+        Each parameter is tagged
+        <span class="tag tag-E">E</span> empirical,
+        <span class="tag tag-X">X</span> extrapolative, or
+        <span class="tag tag-S">S</span> speculative.
+      </p>
+      <div class="mc-controls">
+        <label class="field">
+          <span>Monte Carlo runs</span>
+          <input type="number" id="mc-runs" min="2" max="200" step="1" value="40" />
+        </label>
+      </div>
+      <div id="param-groups"></div>
+    </aside>
+
+    <main class="content">
+      <nav class="tabs">
+        <button class="tab tab-active" data-tab="history">History</button>
+        <button class="tab" data-tab="montecarlo">Monte Carlo</button>
+        <button class="tab" data-tab="model">The Model</button>
+      </nav>
+
+      <!-- ================= HISTORY ================= -->
+      <section class="tab-panel" id="panel-history">
+        <div class="empty-state" id="history-empty">
+          <p>Press <strong>Run one history</strong> to integrate a single stochastic
+             trajectory of the coupled system and watch a civilizational ecosystem
+             unfold across deep time.</p>
+        </div>
+        <div id="history-body" class="hidden">
+          <div class="stat-row" id="stat-row"></div>
+
+          <h3 class="section-title">Observable trajectories <span class="muted">&sect;41</span></h3>
+          <div class="chart-grid" id="history-charts"></div>
+
+          <div class="split">
+            <div class="panel">
+              <h3 class="section-title">Field network <span class="muted">&sect;4&ndash;5</span></h3>
+              <p class="panel-sub">Inhabited sites in the Field graph. Node colour = civilization,
+                 size = population, halo = local Field state &psi;. Edge opacity = Field route weight.</p>
+              <div id="network"></div>
+              <div id="network-legend" class="legend"></div>
+            </div>
+            <div class="panel">
+              <h3 class="section-title">Civilizations at t<sub>end</sub></h3>
+              <div id="civ-table" class="table-wrap"></div>
+            </div>
+          </div>
+
+          <h3 class="section-title">Historical stratigraphy <span class="muted">&sect;48</span></h3>
+          <p class="panel-sub">Every discrete event in the run, laid down in time like strata.</p>
+          <div id="timeline"></div>
+          <div id="timeline-legend" class="legend"></div>
+        </div>
+      </section>
+
+      <!-- ================= MONTE CARLO ================= -->
+      <section class="tab-panel hidden" id="panel-montecarlo">
+        <div class="empty-state" id="mc-empty">
+          <p>Press <strong>Run Monte Carlo</strong> to sample an ensemble of independent
+             histories and estimate the probability questions of &sect;42.</p>
+        </div>
+        <div id="mc-progress-wrap" class="hidden">
+          <div class="progress"><div id="mc-progress-bar" class="progress-bar"></div></div>
+          <p id="mc-progress-text" class="muted"></p>
+        </div>
+        <div id="mc-body" class="hidden">
+          <h3 class="section-title">Probability questions <span class="muted">&sect;42</span></h3>
+          <p class="panel-sub">Empirical frequency over <span id="mc-n"></span> runs, with
+             &plusmn;1 standard error.</p>
+          <div id="mc-prob"></div>
+
+          <h3 class="section-title">Ensemble trajectories</h3>
+          <p class="panel-sub">Mean across the ensemble; shaded band is the 10th&ndash;90th percentile.</p>
+          <div class="chart-grid" id="mc-charts"></div>
+        </div>
+      </section>
+
+      <!-- ================= MODEL ================= -->
+      <section class="tab-panel hidden" id="panel-model">
+        <div class="panel">
+          <h3 class="section-title">State variables <span class="muted">&sect;6</span></h3>
+          <div id="glossary" class="glossary"></div>
+        </div>
+        <div class="panel">
+          <h3 class="section-title">Field-mastery tiers <span class="muted">&sect;16</span></h3>
+          <div id="tiers" class="tiers"></div>
+        </div>
+        <div class="panel">
+          <h3 class="section-title">Full specification</h3>
+          <div id="model-doc" class="model-doc">Loading&hellip;</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

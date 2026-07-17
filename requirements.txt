@@ -1,0 +1,3 @@
+# The Deep-Time model needs only numpy at runtime; the web server is built on
+# the Python standard library (no Flask/FastAPI).
+numpy>=1.23
