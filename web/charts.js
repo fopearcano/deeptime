@@ -287,5 +287,139 @@
     container.appendChild(svg);
   }
 
-  window.DTCharts = { lineChart, networkGraph, timeline, civColor, PALETTE, fmt };
+  // DEEP-TIME LADDER (Image 1: "Tempo profondo delle civilta") ---------------
+  // Civilizational level (1..7 named eras) on Y vs cosmic years (log) on X.
+  function fmtYears(y) {
+    if (y >= 1e9) return (y / 1e9).toLocaleString(undefined, { maximumFractionDigits: 0 }) + "B";
+    if (y >= 1e6) return (y / 1e6) + "M";
+    if (y >= 1e3) return (y / 1e3) + "k";
+    return "" + Math.round(y);
+  }
+
+  function ladderChart(container, opts) {
+    clear(container);
+    const W = Math.max(340, container.clientWidth || 760), H = opts.height || 380;
+    const m = { t: 16, r: 18, b: 40, l: 160 };
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const svg = el("svg", { class: "chart-svg", viewBox: `0 0 ${W} ${H}`, width: "100%", height: H });
+    const eras = opts.eras || [];
+    const y0 = Math.log10(opts.year0), y1 = Math.log10(opts.year_end);
+    const span = (y1 - y0) || 1;
+    const X = yr => m.l + (Math.log10(Math.max(yr, opts.year0)) - y0) / span * iw;
+    const nL = 7;
+    const Yc = lvl => m.t + (nL - lvl + 0.5) / nL * ih;
+    const Ytop = lvl => m.t + (nL - lvl) / nL * ih;
+
+    // era bands + names
+    for (let L = 1; L <= nL; L++) {
+      const era = eras.find(e => e.level === L) || { name: "", name_it: "" };
+      svg.appendChild(el("rect", { x: m.l, y: Ytop(L), width: iw, height: ih / nL,
+        fill: L % 2 ? "rgba(255,255,255,0.028)" : "rgba(144,133,233,0.06)" }));
+      svg.appendChild(el("line", { x1: m.l, x2: m.l + iw, y1: Ytop(L), y2: Ytop(L), stroke: GRID, "stroke-width": 1 }));
+      svg.appendChild(el("text", { x: m.l - 12, y: Yc(L) - 1, "text-anchor": "end", fill: INK2, "font-size": 11, "font-weight": 600 }, `${L}. ${era.name}`));
+      if (era.name_it)
+        svg.appendChild(el("text", { x: m.l - 12, y: Yc(L) + 11, "text-anchor": "end", fill: MUTED, "font-size": 9 }, era.name_it));
+    }
+    svg.appendChild(el("line", { x1: m.l, x2: m.l + iw, y1: m.t + ih, y2: m.t + ih, stroke: BASE, "stroke-width": 1 }));
+
+    // x ticks (powers of ten); "Oggi" marks the left edge (today)
+    for (let e = Math.ceil(y0); e <= Math.floor(y1); e++) {
+      const yr = Math.pow(10, e), x = X(yr);
+      svg.appendChild(el("line", { x1: x, x2: x, y1: m.t, y2: m.t + ih, stroke: GRID, "stroke-width": 1, opacity: 0.5 }));
+      if (x > m.l + 30)   // avoid colliding with the "Oggi" label at the origin
+        svg.appendChild(el("text", { x, y: H - 20, "text-anchor": "middle", fill: MUTED, "font-size": 10 }, fmtYears(yr)));
+    }
+    svg.appendChild(el("text", { x: m.l, y: H - 20, "text-anchor": "middle", fill: INK2, "font-size": 10, "font-weight": 600 }, "Oggi"));
+    svg.appendChild(el("text", { x: m.l + iw / 2, y: H - 5, "text-anchor": "middle", fill: MUTED, "font-size": 10 }, "years in Earth's future (log scale)"));
+
+    // gradient (blue -> violet -> gold along the ladder)
+    const defs = el("defs"), gid = "ladgrad" + Math.floor(Yc(1));
+    const lg = el("linearGradient", { id: gid, x1: 0, y1: m.t + ih, x2: 0, y2: m.t, gradientUnits: "userSpaceOnUse" });
+    [["0%", "#3987e5"], ["55%", "#9085e9"], ["100%", "#eda100"]].forEach(s => lg.appendChild(el("stop", { offset: s[0], "stop-color": s[1] })));
+    defs.appendChild(lg); svg.appendChild(defs);
+
+    // per-civ faint frontier lines
+    const per = opts.per_civ || {};
+    Object.keys(per).forEach(cid => {
+      const pts = per[cid]; if (!pts || pts.length < 2) return;
+      const d = "M" + pts.map(p => `${X(p[0])},${Yc(p[1])}`).join(" L");
+      svg.appendChild(el("path", { d, fill: "none", stroke: civColor(+cid), "stroke-width": 1.2, opacity: 0.3 }));
+    });
+
+    // frontier line (bold, gradient)
+    const fr = (opts.frontier || []).filter(p => p[1] >= 1);
+    if (fr.length > 1) {
+      const d = "M" + fr.map(p => `${X(p[0])},${Yc(p[1])}`).join(" L");
+      svg.appendChild(el("path", { d, fill: "none", stroke: `url(#${gid})`, "stroke-width": 2.6, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+    }
+
+    // narrative-present marker
+    if (opts.narrativeYear) {
+      const x = X(opts.narrativeYear);
+      svg.appendChild(el("line", { x1: x, x2: x, y1: m.t, y2: m.t + ih, stroke: "#eda100", "stroke-width": 1.5, "stroke-dasharray": "4 3", opacity: 0.9 }));
+      svg.appendChild(el("text", { x, y: m.t + 11, "text-anchor": "middle", fill: "#eda100", "font-size": 9.5, "font-weight": 700 }, "Presente narrativo"));
+    }
+
+    // hover
+    const dot = el("circle", { r: 4, fill: "#eda100", stroke: SURF, "stroke-width": 1.5, opacity: 0 });
+    svg.appendChild(dot);
+    const hit = el("rect", { x: m.l, y: m.t, width: iw, height: ih, fill: "transparent" });
+    svg.appendChild(hit);
+    hit.addEventListener("mousemove", (e) => {
+      if (!fr.length) return;
+      const r = svg.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width * W;
+      let best = fr[0], bd = Infinity;
+      for (const p of fr) { const d = Math.abs(X(p[0]) - px); if (d < bd) { bd = d; best = p; } }
+      dot.setAttribute("cx", X(best[0])); dot.setAttribute("cy", Yc(best[1])); dot.setAttribute("opacity", 1);
+      const era = eras.find(er => er.level === best[1]) || { name: "", name_it: "" };
+      showTip(`<div class="tt-title">${fmtYears(best[0])} years ahead</div>` +
+        `<div class="tt-row">era<b>${best[1]}. ${era.name}</b></div>` +
+        (era.name_it ? `<div class="tt-row">&nbsp;<b>${era.name_it}</b></div>` : ""), e.clientX, e.clientY);
+    });
+    hit.addEventListener("mouseleave", () => { dot.setAttribute("opacity", 0); hideTip(); });
+    container.appendChild(svg);
+  }
+
+  // COSMOLOGICAL CONTEXT STRIP (Images 4-5) ----------------------------------
+  // Log cosmic-age bar from today to heat death, with the civilizational
+  // narrative shown as the tiny sliver it occupies.
+  const COSMO_COLORS = {
+    stelliferous: "#3987e5", late_stelliferous: "#199e70",
+    degenerate: "#9085e9", black_hole: "#5b4a86", heat_death: "#4a4a47",
+  };
+  function cosmoStrip(container, opts) {
+    clear(container);
+    const W = Math.max(320, container.clientWidth || 760), H = 96;
+    const m = { t: 22, r: 14, b: 26, l: 14 };
+    const iw = W - m.l - m.r, barH = 26;
+    const svg = el("svg", { class: "chart-svg", viewBox: `0 0 ${W} ${H}`, width: "100%", height: H });
+    const ageNow = opts.universeAgeNow || 1.38e10;
+    const lo = Math.log10(ageNow), hi = 100;                 // log age from today to ~heat death
+    const X = age => m.l + (Math.log10(Math.max(age, ageNow)) - lo) / (hi - lo) * iw;
+    const eras = opts.eras || [];
+    eras.forEach(er => {
+      const a0 = Math.max(er.start, ageNow);
+      const a1 = er.end || Math.pow(10, hi);
+      const x0 = X(a0), x1 = X(a1);
+      svg.appendChild(el("rect", { x: x0, y: m.t, width: Math.max(1, x1 - x0), height: barH, rx: 2,
+        fill: COSMO_COLORS[er.key] || "#444", "fill-opacity": 0.85, stroke: SURF, "stroke-width": 1 }));
+      if (x1 - x0 > 46)
+        svg.appendChild(el("text", { x: (x0 + x1) / 2, y: m.t + barH / 2 + 4, "text-anchor": "middle", fill: "#fff", "font-size": 9.5, "font-weight": 600 }, er.name.replace(" Era", "")));
+    });
+    // narrative window (now .. narrative year) highlighted
+    const narrAge = ageNow + (opts.narrativeYear || 5e10);
+    const nx0 = X(ageNow), nx1 = X(narrAge);
+    svg.appendChild(el("rect", { x: nx0 - 1, y: m.t - 6, width: Math.max(3, nx1 - nx0), height: barH + 12, rx: 3, fill: "none", stroke: "#eda100", "stroke-width": 2 }));
+    svg.appendChild(el("text", { x: nx0, y: m.t - 10, "text-anchor": "start", fill: "#eda100", "font-size": 10, "font-weight": 700 }, "civilizational narrative"));
+    // axis labels
+    [ageNow, 1e14, 1e40, 1e100].forEach(a => {
+      const x = X(a);
+      svg.appendChild(el("text", { x: Math.min(Math.max(x, m.l + 8), W - m.r - 8), y: H - 8, "text-anchor": "middle", fill: MUTED, "font-size": 9 },
+        a <= ageNow ? "today" : "10^" + Math.round(Math.log10(a)) + " yr"));
+    });
+    container.appendChild(svg);
+  }
+
+  window.DTCharts = { lineChart, networkGraph, timeline, ladderChart, cosmoStrip, civColor, PALETTE, fmt, fmtYears };
 })();

@@ -97,6 +97,55 @@ def test_population_nonnegative_and_records_grow():
     assert sim.records[-1]["t"] <= p.t_max + p.dt_max
 
 
+# --- civilizational & cosmological framework (Image 1, 4-5) ----------------
+def test_civ_era_ladder_monotonic():
+    # planetary at the bottom, chronal at the top
+    assert S.civ_era(0.7, 0.0)[0] == 1
+    assert S.civ_era(1.2, 1.0)[1] == "Solar"
+    assert S.civ_era(2.2, 2.0)[1] == "Interstellar"
+    assert S.civ_era(2.8, 3.0)[1] == "Galactic"
+    assert S.civ_era(4.5, 6.5)[0] == 7
+    # both thresholds required: high Phi but low K cannot be top era
+    assert S.civ_era(0.5, 6.5)[0] < 7
+    # non-decreasing in both arguments
+    prev = 0
+    for K, Phi in [(0.5, 0.2), (1.1, 1.1), (2.1, 2.1), (2.6, 3.1), (3.1, 3.6), (3.9, 4.6), (4.3, 6.1)]:
+        lvl = S.civ_era(K, Phi)[0]
+        assert lvl >= prev
+        prev = lvl
+
+
+def test_cosmo_era_and_energy_factor():
+    assert S.cosmo_era(1.38e10 + 5e10)[0] == "stelliferous"
+    assert S.cosmo_era(1e15)[0] == "degenerate"
+    assert S.cosmo_era(1e101)[0] == "heat_death"
+    # stellar energy availability declines with cosmic age, never rising
+    ages = [1e10, 1e13, 1e15, 1e50, 1e101]
+    factors = [S.cosmo_energy_factor(a) for a in ages]
+    assert factors[0] == 1.0
+    assert all(factors[i] >= factors[i + 1] for i in range(len(factors) - 1))
+
+
+def test_cosmic_year_mapping_monotonic():
+    p = Params(t_max=40, cosmic_year0=1e5, cosmic_year_end=5e11)
+    sim = Simulation(params=p)
+    assert abs(sim.cosmic_years(0) - 1e5) / 1e5 < 1e-6
+    assert abs(sim.cosmic_years(40) - 5e11) / 5e11 < 1e-6
+    ys = [sim.cosmic_years(t) for t in range(0, 41, 5)]
+    assert all(ys[i] < ys[i + 1] for i in range(len(ys) - 1))
+
+
+def test_snapshot_has_ladder_and_cosmos():
+    p = Params(n_nodes=14, n_civ=2, t_max=20, seed=4)
+    sim = Simulation(params=p); sim.run(record_every=6)
+    snap = run_snapshot(sim)
+    assert "ladder" in snap and "frontier" in snap["ladder"]
+    assert all(1 <= pt[1] <= 7 for pt in snap["ladder"]["frontier"] if pt[1] > 0)
+    assert "cosmos" in snap and "cosmo_era" in snap["cosmos"]
+    for row in snap["civ_table"]:
+        assert 1 <= row["era_level"] <= 7 and "era" in row
+
+
 # --- serialization ---------------------------------------------------------
 def test_snapshot_json_serializable():
     p = Params(n_nodes=14, n_civ=3, t_max=15, seed=5)

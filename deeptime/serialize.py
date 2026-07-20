@@ -92,6 +92,7 @@ def run_snapshot(sim: Simulation) -> Dict:
         Etot = float(np.sum(sim.x[a, nodes, S.E]))
         K = (np.log10(max(Etot, 1e-9)) - sim.params.kardashev_k0) / sim.params.kardashev_dk
         phi = float(np.max(sim.x[a, nodes, S.PHI]))
+        level, era_en, era_it = S.civ_era(K, phi)
         civ_table.append({
             "civ": int(a),
             "nodes": int(len(nodes)),
@@ -99,11 +100,40 @@ def run_snapshot(sim: Simulation) -> Dict:
             "K": float(K),
             "Phi": phi,
             "tier": S.field_tier(phi),
+            "era_level": level,
+            "era": era_en,
+            "era_it": era_it,
             "A": float(np.mean(sim.x[a, nodes, S.A])),
             "G": float(np.mean(sim.x[a, nodes, S.G])),
             "I": float(np.mean(sim.x[a, nodes, S.I])),
             "universe": int(sim.universe_idx[a]),
+            "aeon": int(sim.aeon_count[a]),
         })
     summary["civ_table"] = civ_table
     summary["params"] = sim.params.to_dict()
+
+    # Deep-time ladder trajectory (Image 1): civilizational level vs cosmic year.
+    # We plot, at each record, the (cosmic_year, max_era) reached by the leading
+    # civilization -- the frontier of the civilizational ecosystem.
+    ladder = [[rec.get("cosmic_year", 0.0), rec.get("max_era", 0)] for rec in sim.records]
+    # per-civ frontier lines keyed by civ id (era over cosmic time)
+    per_civ = {}
+    for rec in sim.records:
+        cy = rec.get("cosmic_year", 0.0)
+        for cid, c in rec.get("civ", {}).items():
+            per_civ.setdefault(int(cid), []).append([cy, c.get("era_level", 1)])
+    summary["ladder"] = {
+        "frontier": ladder,
+        "per_civ": per_civ,
+        "narrative_year": float(sim.params.narrative_year),
+        "year0": float(sim.params.cosmic_year0),
+        "year_end": float(sim.params.cosmic_year_end),
+    }
+    final = sim.records[-1] if sim.records else {}
+    summary["cosmos"] = {
+        "cosmic_year": final.get("cosmic_year", 0.0),
+        "cosmo_era": final.get("cosmo_era", ""),
+        "cosmo_era_key": final.get("cosmo_era_key", ""),
+        "max_aeon": int(max((sim.aeon_count[a] for a in sim.alive_indices()), default=0)),
+    }
     return summary

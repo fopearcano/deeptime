@@ -51,6 +51,8 @@
     buildParamControls();
     buildGlossary();
     buildTiers();
+    buildEraRef();
+    buildCosmoRef();
     loadModelDoc();
     wireButtons();
     window.addEventListener("resize", debounce(() => {
@@ -155,8 +157,10 @@
     const lastCivs = d.civ_table || [];
     const bestPhi = lastCivs.reduce((a, c) => c.Phi > a ? c.Phi : a, 0);
     const bestTier = lastCivs.reduce((a, c) => c.Phi >= (a.Phi || -1) ? c : a, {});
+    const lead = lastCivs.slice().sort((a, b) => (b.era_level || 0) - (a.era_level || 0))[0] || {};
     const kmax = s.K_max.length ? Math.max(...s.K_max) : 0;
     const tiles = [
+      { k: "Civilizational era", v: lead.era_level ? (lead.era_level + ". " + lead.era) : "—", sub: lead.era_it || "leading civilization" },
       { k: "Peak Kardashev", v: C.fmt(kmax), sub: "energy tier" },
       { k: "Field mastery", v: C.fmt(bestPhi), sub: bestTier.tier || "—" },
       { k: "Civilizations (end)", v: String(lastCivs.length), sub: "of " + Math.round(rp.n_civ) + " seeded" },
@@ -165,6 +169,24 @@
     ];
     $("#stat-row").innerHTML = tiles.map(t =>
       `<div class="stat"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="sub">${t.sub}</div></div>`).join("");
+
+    // deep-time ladder (Image 1) + cosmological context
+    const lad = d.ladder || {};
+    C.ladderChart($("#ladder"), {
+      frontier: lad.frontier || [], per_civ: lad.per_civ || {},
+      year0: lad.year0, year_end: lad.year_end, narrativeYear: lad.narrative_year,
+      eras: (state.config && state.config.civ_eras) || [],
+    });
+    C.cosmoStrip($("#cosmo-strip"), {
+      eras: (state.config && state.config.cosmo_eras) || [],
+      universeAgeNow: state.config && state.config.universe_age_now,
+      narrativeYear: rp.narrative_year,
+    });
+    const cos = d.cosmos || {};
+    $("#cosmo-note").innerHTML =
+      `Narrative present: <b>${C.fmtYears(cos.cosmic_year || 0)} yr ahead</b> &middot; ` +
+      `cosmological era: <b>${cos.cosmo_era || "—"}</b> &middot; ` +
+      `aeonic crossovers (CCC): <b>${cos.max_aeon || 0}</b>`;
 
     // charts — append every card FIRST so the grid has settled each card's
     // final width, then render (avoids the first card being measured while it
@@ -199,16 +221,16 @@
 
   function renderCivTable(civs) {
     if (!civs.length) { $("#civ-table").innerHTML = "<p class='muted'>No civilizations survived to the horizon.</p>"; return; }
-    const rows = civs.slice().sort((a, b) => b.nodes - a.nodes).map(c =>
+    const rows = civs.slice().sort((a, b) => (b.era_level || 0) - (a.era_level || 0) || b.nodes - a.nodes).map(c =>
       `<tr>
         <td><span class="civ-dot" style="background:${C.civColor(c.civ)}"></span>Civ ${c.civ}</td>
+        <td style="text-align:left">${c.era_level ? c.era_level + ". " + c.era : "—"}</td>
         <td>${c.nodes}</td><td>${C.fmt(c.K)}</td><td>${C.fmt(c.Phi)}</td>
-        <td style="text-align:left">${c.tier}</td><td>${C.fmt(c.A)}</td>
-        <td>${C.fmt(c.G)}</td><td>${C.fmt(c.I)}</td><td>U${c.universe}</td>
+        <td>${C.fmt(c.G)}</td><td>${C.fmt(c.I)}</td><td>${c.aeon || 0}</td>
       </tr>`).join("");
     $("#civ-table").innerHTML =
-      `<table><thead><tr><th>Civilization</th><th>Sites</th><th>K</th><th>Φ</th>
-        <th style="text-align:left">Tier</th><th>A</th><th>G</th><th>I</th><th>Universe</th></tr></thead>
+      `<table><thead><tr><th>Civilization</th><th style="text-align:left">Era</th><th>Sites</th>
+        <th>K</th><th>Φ</th><th>G</th><th>I</th><th>Aeon</th></tr></thead>
        <tbody>${rows}</tbody></table>`;
   }
 
@@ -304,10 +326,25 @@
   function buildTiers() {
     const tiers = state.config.field_tiers;
     $("#tiers").innerHTML = tiers.map((t, i) => {
-      const hi = i < tiers.length - 1 ? "< " + tiers[i + 1].threshold : "+";
       const rng = i < tiers.length - 1 ? `${t.threshold} – ${tiers[i + 1].threshold}` : `≥ ${t.threshold}`;
       return `<div class="tier"><span class="rng">Φ ${rng}</span><span>${t.label}</span></div>`;
     }).join("");
+  }
+  function buildEraRef() {
+    const eras = state.config.civ_eras || [];
+    $("#era-ref").innerHTML = eras.map(e =>
+      `<div class="tier era-ref-row">
+         <span class="rng">${e.level}. ${e.name}</span>
+         <span><b>${e.name_it}</b> &nbsp;<span class="muted">K&ge;${e.K_min} &middot; &Phi;&ge;${e.Phi_min}</span><br>
+           <span class="gl-desc">${e.desc}</span></span>
+       </div>`).join("");
+  }
+  function buildCosmoRef() {
+    const eras = state.config.cosmo_eras || [];
+    const fmtE = v => v == null ? "∞" : (v === 0 ? "0" : "10^" + Math.round(Math.log10(v)));
+    $("#cosmo-ref").innerHTML = eras.map(e =>
+      `<div class="tier"><span class="rng">${fmtE(e.start)}–${fmtE(e.end)} yr</span>
+        <span>${e.name}<br><span class="gl-desc">${e.note}</span></span></div>`).join("");
   }
   async function loadModelDoc() {
     try {

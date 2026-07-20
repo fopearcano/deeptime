@@ -115,7 +115,8 @@ class EnsembleResult:
 def summarize_run(run: Simulation) -> dict:
     """Compact JSON-serialisable summary of a single run for the frontend."""
     series = {"t": [], "K_max": [], "Phi_max": [], "P_total": [], "A_mean": [],
-              "n_civ": [], "n_colonized": [], "R_gal": [], "psi_mean": []}
+              "n_civ": [], "n_colonized": [], "R_gal": [], "psi_mean": [],
+              "cosmic_year": [], "max_era": []}
     for rec in run.records:
         series["t"].append(rec["t"])
         series["K_max"].append(_civ_reduce(rec, "K", "max"))
@@ -126,6 +127,8 @@ def summarize_run(run: Simulation) -> dict:
         series["n_colonized"].append(rec["n_colonized"])
         series["R_gal"].append(rec.get("R_gal", 0.0))
         series["psi_mean"].append(rec.get("psi_mean", 0.0))
+        series["cosmic_year"].append(rec.get("cosmic_year", 0.0))
+        series["max_era"].append(rec.get("max_era", 0))
     events = [
         {"t": e.t, "kind": e.kind, "civ": e.civ, "node": e.node, "detail": e.detail}
         for e in run.events

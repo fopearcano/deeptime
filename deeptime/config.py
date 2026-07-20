@@ -38,6 +38,16 @@ class Params:
     adapt_eps: float = 0.3       # target relative change per step (sec. 40)
     seed: int = 0                # base RNG seed
 
+    # --- cosmic-time framing (Images 1, 4-5) -----------------------------
+    # The nondimensional integration time t is mapped log-uniformly onto
+    # "years in Earth's future" so a run can be read on the deep-time ladder of
+    # Image 1 (Oggi -> 1e6 -> ... -> 5e11 yr).  These are a reporting transform
+    # (like theta in section 3) plus, via the cosmological era, a slow modulation
+    # of stellar energy availability.
+    cosmic_year0: float = 1.0e5      # years-from-now at t = 0          [X]
+    cosmic_year_end: float = 5.0e11  # years-from-now at t = t_max      [X]
+    narrative_year: float = 5.0e10   # "Presente narrativo" (Image 1)   [S]
+
     # --- population (sections 7) -----------------------------------------
     pop_r: float = 0.55          # intrinsic growth rate            [E]
     pop_mu: float = 0.03         # baseline death/decay rate        [E]
@@ -304,6 +314,7 @@ PARAM_META: Dict[str, Dict[str, Any]] = {
     "n_civ":          {"group": "Scenario", "label": "Initial civilizations", "tag": "E", "min": 1, "max": 8, "step": 1, "int": True},
     "t_max":          {"group": "Scenario", "label": "Time horizon", "tag": "E", "min": 10, "max": 200, "step": 5},
     "seed":           {"group": "Scenario", "label": "Random seed", "tag": "E", "min": 0, "max": 100000, "step": 1, "int": True},
+    "cosmic_year_end": {"group": "Cosmic time", "label": "Horizon (years ahead)", "tag": "X", "min": 1e9, "max": 1e18, "step": 1e9},
 
     "pop_r":          {"group": "Population", "label": "Growth rate r", "tag": "E", "min": 0.0, "max": 1.5, "step": 0.01},
     "pop_mu":         {"group": "Population", "label": "Mortality mu", "tag": "E", "min": 0.0, "max": 0.3, "step": 0.005},

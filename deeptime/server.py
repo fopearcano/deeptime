@@ -62,6 +62,17 @@ def _config_payload() -> dict:
         "var_labels": S.VAR_LABELS,
         "domain_labels": S.DOMAIN_LABELS,
         "field_tiers": [{"threshold": t, "label": lbl} for t, lbl in S.FIELD_TIERS],
+        "civ_eras": [
+            {"level": lvl, "key": key, "name": en, "name_it": it,
+             "K_min": kmin, "Phi_min": pmin, "desc": desc}
+            for lvl, key, en, it, kmin, pmin, desc in S.CIV_ERAS
+        ],
+        "cosmo_eras": [
+            {"key": key, "name": name, "start": lo,
+             "end": (None if hi == float("inf") else hi), "note": note}
+            for key, name, lo, hi, note in S.COSMO_ERAS
+        ],
+        "universe_age_now": S.UNIVERSE_AGE_NOW,
         "questions": list(QUESTIONS.keys()),
     }
 

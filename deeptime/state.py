@@ -118,3 +118,90 @@ def field_tier(phi: float) -> str:
         else:
             break
     return label
+
+
+# ---------------------------------------------------------------------------
+# Civilizational eras / levels  ("Tempo profondo delle civilta", Image 1)
+# ---------------------------------------------------------------------------
+# A civilization's *era* is the joint reading of its energy mastery (the
+# continuous Kardashev index K) and its Field mastery (Phi).  Each era is reached
+# only when BOTH thresholds are met -- energy and Field advance together but an
+# era is defined by the pair.  The named ladder runs from a contemporary
+# planetary civilization up to the chronal / universally self-referential stage.
+#
+#   (level, key, English name, Italian name, K_min, Phi_min, description)
+CIV_ERAS = [
+    (1, "planetary",    "Planetary",    "Terra contemporanea", 0.0, 0.0,
+     "Incomplete planetary civilization; industrial energy and a global network."),
+    (2, "solar",        "Solar",        "Civilta solare",      1.0, 1.0,
+     "Industrialized star system; first network structures; first Field probes."),
+    (3, "interstellar", "Interstellar", "Diaspora",            2.0, 2.0,
+     "First interstellar colonies; network formation; instantaneous communication."),
+    (4, "galactic",     "Galactic",     "Imperi galattici",    2.5, 3.0,
+     "Networks of vast numbers of systems; millennial longevity; imperial cycles."),
+    (5, "oceanic",      "Oceanic",      "Eta oceanica",        3.0, 3.5,
+     "Mapping the quantum currents; superluminal navigation; Field ecosystems."),
+    (6, "eonic",        "Eonic",        "Eta eonica",          3.8, 4.5,
+     "Intergalactic network; cosmological-scale cognition; migration between conformal aeons."),
+    (7, "chronal",      "Chronal",      "Cronale",             4.2, 6.0,
+     "Universal self-referential consciousness; trans-universal awareness of the Field."),
+]
+
+CIV_ERA_NAMES = [e[2] for e in CIV_ERAS]
+
+
+def civ_era(K: float, Phi: float):
+    """Return ``(level, english_name, italian_name)`` for a (K, Phi) pair.
+
+    The highest era whose energy AND Field thresholds are both satisfied wins.
+    """
+    level, en, it = CIV_ERAS[0][0], CIV_ERAS[0][2], CIV_ERAS[0][3]
+    for lvl, key, name_en, name_it, kmin, pmin, _desc in CIV_ERAS:
+        if K >= kmin and Phi >= pmin:
+            level, en, it = lvl, name_en, name_it
+    return level, en, it
+
+
+# ---------------------------------------------------------------------------
+# Cosmological eras of the universe (Images 4-5: standard ΛCDM timeline)
+# ---------------------------------------------------------------------------
+# Keyed on the total cosmic age (years after the Big Bang).  Present day is
+# ~1.38e10 yr; the civilizational narrative plays out inside the Stelliferous
+# era, with the Degenerate / Black-Hole / Heat-Death eras as the far-future
+# backdrop that aeonic (CCC) transitions are meant to escape.
+#   (key, name, age_start, age_end, note)
+COSMO_ERAS = [
+    ("stelliferous",      "Stelliferous Era",        0.0,   1.0e12,  "Stars form and shine."),
+    ("late_stelliferous", "Late Stelliferous Era",   1.0e12, 1.0e14, "Star formation winds down; compact remnants accumulate."),
+    ("degenerate",        "Degenerate Era",          1.0e14, 1.0e40, "Stellar remnants dominate; ordinary matter slowly disappears."),
+    ("black_hole",        "Black-Hole Era",          1.0e40, 1.0e100, "Black holes dominate and slowly evaporate via Hawking radiation."),
+    ("heat_death",        "Heat Death / Big Freeze", 1.0e100, float("inf"), "Maximum entropy; a cold, dilute, ever-expanding cosmos."),
+]
+
+UNIVERSE_AGE_NOW = 1.38e10   # years after the Big Bang, today
+
+
+def cosmo_era(age_years: float):
+    """Return ``(key, name)`` of the cosmological era at a given cosmic age."""
+    for key, name, lo, hi, _note in COSMO_ERAS:
+        if lo <= age_years < hi:
+            return key, name
+    return COSMO_ERAS[-1][0], COSMO_ERAS[-1][1]
+
+
+def cosmo_energy_factor(age_years: float) -> float:
+    """Availability of *stellar/galactic* energy vs cosmic age (Image 3).
+
+    Falls as stars fade after the Stelliferous era.  Field-tapped energy is not
+    scaled by this factor -- in this universe the Field is the constant, so it is
+    the energy source that persists into the deep cosmological future.
+    """
+    if age_years < 1.0e12:
+        return 1.0
+    if age_years < 1.0e14:
+        return 0.6
+    if age_years < 1.0e40:
+        return 0.15
+    if age_years < 1.0e100:
+        return 0.03
+    return 0.005

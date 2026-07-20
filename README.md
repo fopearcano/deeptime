@@ -65,6 +65,37 @@ ens = run_ensemble(Params(), n_runs=100)
 print(ens.probabilities)                         # P(K>=3), P(chronal), ...
 ```
 
+## The deep-time framework (the diagrams)
+
+On top of the raw dynamics the model exposes the **civilizational-evolution
+framework** of the accompanying diagrams:
+
+* **Seven civilizational eras** — `Planetary → Solar → Interstellar → Galactic →
+  Oceanic → Eonic → Chronal` (with their Italian names *Terra contemporanea …
+  Cronale*). An era is read jointly from the continuous Kardashev index **K**
+  (energy mastery) and the Field mastery **Φ**: a civilization enters an era only
+  once **both** its K and Φ thresholds are met (`deeptime/state.py: civ_era`).
+* **A cosmic-time axis** — the nondimensional integration time is mapped
+  log-uniformly onto *years in Earth's future* (Oggi → 10⁶ → … → 5·10¹¹ yr), so a
+  run can be read directly on the deep-time ladder. The **narrative present**
+  sits at 50 billion years.
+* **The cosmological backdrop** — the universe's own ΛCDM lifecycle
+  (Stelliferous → Late-Stelliferous → Degenerate → Black-Hole → Heat-Death). The
+  civilizational narrative occupies a sliver of the Stelliferous era; stellar and
+  galactic energy availability **fades** in later cosmic eras (energy access
+  drives complexity), while the **Field-tapped energy tier persists** — *il Campo
+  è la costante*.
+* **Conformal Cyclic Cosmology (Penrose CCC)** — aeonic transitions are
+  conformal crossovers along a linked sequence of aeons; each civilization tracks
+  its aeon count, with the accessible-universe index cycling with period *P*
+  (§33). This is the model's route past the far-future eras — the "infinity of
+  infinities."
+
+The web **History** tab leads with the *Deep-Time Ladder* chart (civilizational
+level vs cosmic time, matching the reference diagram) and a cosmological-context
+strip; the **The Model** tab lists the era ladder, Field tiers and cosmological
+eras.
+
 ## What the model produces
 
 Under the illustrative default parameters a typical deep-time arc runs
@@ -121,7 +152,9 @@ examples/, tests/
 | §29 Archival integrity | `continuous_drift` (Z) |
 | §30 Collapse hazard & jump | `_sample_collapse`, `_apply_collapse` |
 | §31–32 Fragmentation & merger | `_sample_fragmentation`, `_sample_merger` |
-| §33–34 Aeonic structure & gates | `_sample_aeonic` |
+| §33–34 Aeonic structure & gates (Penrose CCC crossovers) | `_sample_aeonic`, `aeon_count` |
+| Civilizational era ladder (K × Φ → 7 eras) | `state.civ_era`, `CIV_ERAS` |
+| Cosmic-time axis & cosmological eras | `Simulation.cosmic_years`, `state.cosmo_era`, `cosmo_energy_factor` |
 | §37 Closed-universe escape coherence Ω | `continuous_drift` (Omega) |
 | §39 Constraints | `enforce_constraints` |
 | §40 Nondimensional adaptive timestep | `_adaptive_dt` |

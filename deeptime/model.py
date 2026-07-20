@@ -146,6 +146,7 @@ class Simulation:
         self.capital = np.full(C, -1, dtype=int)
         self.war_state = np.zeros((C, C), dtype=bool)
         self.universe_idx = np.zeros(C, dtype=int)
+        self.aeon_count = np.zeros(C, dtype=int)     # CCC crossovers (Image 2)
         self.last_aeon = np.full(C, -1.0e9)
         self.last_frag = np.full(C, -1.0e9)
         self.last_collapse = np.full((C, n), -1.0e9)
@@ -155,6 +156,7 @@ class Simulation:
         self._w = np.zeros((n, n))
         self._dfield = np.full((n, n), np.inf)
         self._war_damage_cache = np.zeros((C, n))
+        self._cosmo_efactor = 1.0
 
         self._seed_civilizations()
         self.record()
@@ -235,6 +237,17 @@ class Simulation:
             "nodes": np.sum(self.occ, axis=1),
         }
 
+    # -- cosmic time (Images 1, 4-5) -------------------------------------
+    def cosmic_years(self, t: float) -> float:
+        """Map integration time t to 'years in Earth's future' (log-uniform)."""
+        p = self.params
+        frac = min(max(t / max(p.t_max, TINY), 0.0), 1.0)
+        return float(p.cosmic_year0 * (p.cosmic_year_end / p.cosmic_year0) ** frac)
+
+    def cosmic_age(self, t: float) -> float:
+        """Total cosmic age (years after the Big Bang) at integration time t."""
+        return S.UNIVERSE_AGE_NOW + self.cosmic_years(t)
+
     # -- Field graph ------------------------------------------------------
     def _refresh_field(self) -> None:
         """Recompute Field weights every step (cheap) but the shortest-path
@@ -284,8 +297,12 @@ class Simulation:
         dx[..., S.L] = (p.g_L * _safe_pow(A, p.ell_A) * _safe_pow(Q, p.ell_Q)
                         * _safe_pow(Y, p.ell_Y) * (1.0 - L / p.L_max) - p.delta_L * L)
 
-        # energy (section 13)
-        Emax = p.E_planet + p.E_stellar + p.E_galactic + p.E_field * np.clip(Phi / p.Phi_max, 0, 1)
+        # energy (section 13) -- stellar & galactic tiers fade with cosmic era
+        # (Image 3: energy access declines toward the Degenerate Era), while the
+        # Field-tapped tier persists: in this universe the Field is the constant.
+        sf = self._cosmo_efactor
+        Emax = (p.E_planet + (p.E_stellar + p.E_galactic) * sf
+                + p.E_field * np.clip(Phi / p.Phi_max, 0, 1))
         dx[..., S.E] = (p.g_E * _safe_pow(A, p.e_A) * _safe_pow(Y, p.e_Y) * E
                         * (1.0 - E / np.maximum(Emax, TINY)) - p.delta_E * E)
 
@@ -430,6 +447,7 @@ class Simulation:
         p = self.params
         self._war_damage_cache = np.zeros((MAX_CIV_SLOTS, p.n_nodes))
 
+        self._cosmo_efactor = S.cosmo_energy_factor(self.cosmic_age(self.t))
         self._refresh_field()
         Heff = self.effective_cognition()
         self._Heff = Heff              # effective cognition, reused by events
@@ -786,6 +804,7 @@ class Simulation:
             return
         self.alive[b] = True
         self.universe_idx[b] = self.universe_idx[a]
+        self.aeon_count[b] = self.aeon_count[a]
         self.last_aeon[b] = -1.0e9
         self.last_frag[a] = self.t
         self.last_frag[b] = self.t
@@ -872,10 +891,14 @@ class Simulation:
             pgate = float(sigmoid(logit))
             rate = p.aeon_rate * pgate
             if self.rng.random() < 1 - np.exp(-rate * dt):
-                self.universe_idx[a] = (self.universe_idx[a] + 1) % p.aeon_prime
+                # Conformal crossover (Penrose CCC, Image 2): advance one step
+                # along the linked aeon sequence; the accessible-universe index
+                # cycles with period P (section 33).
+                self.aeon_count[a] += 1
+                self.universe_idx[a] = self.aeon_count[a] % p.aeon_prime
                 self.last_aeon[a] = self.t
                 self.events.append(EventRecord(self.t, "aeonic_transition", a, best,
-                                               f"U{self.universe_idx[a]}"))
+                                               f"aeon {self.aeon_count[a]} (U{self.universe_idx[a]})"))
 
     # -- constraints (section 39) ----------------------------------------
     def enforce_constraints(self) -> None:
@@ -910,9 +933,15 @@ class Simulation:
     def record(self) -> None:
         p = self.params
         rec = {"t": float(self.t), "civ": {}, "psi_mean": float(np.mean(self.psi))}
+        cyear = self.cosmic_years(self.t)
+        ckey, cname = S.cosmo_era(S.UNIVERSE_AGE_NOW + cyear)
+        rec["cosmic_year"] = float(cyear)
+        rec["cosmo_era"] = cname
+        rec["cosmo_era_key"] = ckey
         occupied_any = np.any(self.occ > 0, axis=0)
         rec["n_colonized"] = int(np.sum(occupied_any))
         rec["n_civ"] = int(np.sum(self.alive))
+        rec["max_era"] = 0
         occ_nodes = np.where(occupied_any)[0]
         if len(occ_nodes) >= 2:
             dS = self.graph.ordinary_distance()[np.ix_(occ_nodes, occ_nodes)]
@@ -925,20 +954,27 @@ class Simulation:
                 continue
             Etot = float(np.sum(self.x[a, nodes, S.E]))
             K = (np.log10(max(Etot, TINY)) - p.kardashev_k0) / p.kardashev_dk
+            phi = float(np.max(self.x[a, nodes, S.PHI]))
+            level, era_en, era_it = S.civ_era(K, phi)
+            rec["max_era"] = max(rec["max_era"], level)
             rec["civ"][int(a)] = {
                 "P": float(np.sum(self.x[a, nodes, S.P])),
                 "A": float(np.mean(self.x[a, nodes, S.A])),
                 "E": Etot,
                 "K": float(K),
                 "Q": float(np.mean(self.x[a, nodes, S.Q])),
-                "Phi": float(np.max(self.x[a, nodes, S.PHI])),
+                "Phi": phi,
                 "Phi_mean": float(np.mean(self.x[a, nodes, S.PHI])),
                 "G": float(np.mean(self.x[a, nodes, S.G])),
                 "I": float(np.mean(self.x[a, nodes, S.I])),
                 "Lambda": float(np.mean(self.x[a, nodes, S.LAM])),
                 "L": float(np.mean(self.x[a, nodes, S.L])),
                 "nodes": int(len(nodes)),
+                "era_level": level,
+                "era": era_en,
+                "era_it": era_it,
                 "universe": int(self.universe_idx[a]),
+                "aeon": int(self.aeon_count[a]),
             }
         self.records.append(rec)
 
