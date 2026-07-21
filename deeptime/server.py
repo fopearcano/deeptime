@@ -73,6 +73,18 @@ def _config_payload() -> dict:
             for key, name, lo, hi, note in S.COSMO_ERAS
         ],
         "universe_age_now": S.UNIVERSE_AGE_NOW,
+        "oct_ladder": [
+            {"Phi_min": pmin, "oct": lvl, "class": cl, "name": nm, "reach": reach}
+            for pmin, lvl, cl, nm, reach in S.OCT_LADDER
+        ],
+        "cosmic_fates": [
+            {"key": k, "name": n, "weight": w, "note": note}
+            for k, n, w, note in S.COSMIC_FATES
+        ],
+        "qtr_layers": [{"key": k, "name": n, "answers": a} for k, n, a in S.QTR_LAYERS],
+        "qtr_postulates": [{"key": k, "name": n, "text": t} for k, n, t in S.QTR_POSTULATES],
+        "lambda_l": [{"sym": s, "meaning": m} for s, m in S.LAMBDA_L_VALUES],
+        "nav_doors": [{"axis": ax, "door": d, "text": t, "phi": ph} for ax, d, t, ph in S.NAV_DOORS],
         "questions": list(QUESTIONS.keys()),
     }
 

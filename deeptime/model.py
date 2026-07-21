@@ -129,6 +129,13 @@ class Simulation:
     def __post_init__(self) -> None:
         p = self.params
         self.rng = np.random.default_rng(p.seed)
+        # This universe samples one ultimate fate from the QTR prior (single
+        # universe; the fate is its own cosmological lifecycle, not a doorway).
+        fate_keys = [f[0] for f in S.COSMIC_FATES]
+        fate_w = np.array([f[2] for f in S.COSMIC_FATES])
+        fk = fate_keys[int(self.rng.choice(len(fate_keys), p=fate_w / fate_w.sum()))]
+        self.cosmic_fate = fk
+        self.cosmic_fate_name = next(f[1] for f in S.COSMIC_FATES if f[0] == fk)
         self.graph = build_space_graph(p.n_nodes, self.rng)
         n = p.n_nodes
         C = MAX_CIV_SLOTS
@@ -157,6 +164,7 @@ class Simulation:
         self._dfield = np.full((n, n), np.inf)
         self._war_damage_cache = np.zeros((C, n))
         self._cosmo_efactor = 1.0
+        self._phi_max_eff = np.full(C, p.Phi_max)
 
         self._seed_civilizations()
         self.record()
@@ -298,11 +306,16 @@ class Simulation:
                         * _safe_pow(Y, p.ell_Y) * (1.0 - L / p.L_max) - p.delta_L * L)
 
         # energy (section 13) -- stellar & galactic tiers fade with cosmic era
-        # (Image 3: energy access declines toward the Degenerate Era), while the
+        # (energy access declines toward the Degenerate Era), while the
         # Field-tapped tier persists: in this universe the Field is the constant.
+        # The K-Phi coupling (QTR): the galactic tier (K~3) unlocks only with
+        # Field propulsion, and the cosmological/Field tier (K~4-5) only with
+        # topological engineering -- so energy mastery cannot outrun Field mastery.
         sf = self._cosmo_efactor
-        Emax = (p.E_planet + (p.E_stellar + p.E_galactic) * sf
-                + p.E_field * np.clip(Phi / p.Phi_max, 0, 1))
+        gal_gate = np.clip((Phi - p.E_gal_phi0) / 1.5, 0.0, 1.0)
+        field_gate = np.clip((Phi - p.E_field_phi0) / 2.0, 0.0, 1.0)
+        Emax = (p.E_planet + p.E_stellar * sf + p.E_galactic * sf * gal_gate
+                + p.E_field * field_gate)
         dx[..., S.E] = (p.g_E * _safe_pow(A, p.e_A) * _safe_pow(Y, p.e_Y) * E
                         * (1.0 - E / np.maximum(Emax, TINY)) - p.delta_E * E)
 
@@ -328,10 +341,16 @@ class Simulation:
         decay = p.delta_A * disruption[..., None] * self.A_dom
         self._dA_dom = grow - decay
 
-        # Field mastery (section 16)
+        # Field mastery (section 16), with the K-Phi coupling: the reachable
+        # Field ceiling tracks the civilization's energy mastery K (deep Field
+        # mastery is reserved for powers that command the energy of their era).
         Afield = self.A_dom[..., S.DOM_FIELD]
+        Etot_civ = np.sum(E * self.occ, axis=1)                       # (C,)
+        Kciv = (np.log10(np.maximum(Etot_civ, TINY)) - p.kardashev_k0) / p.kardashev_dk
+        phi_max_eff = np.clip(Kciv + p.phi_K_gap, 0.5, p.Phi_max)     # (C,)
+        self._phi_max_eff = phi_max_eff
         dx[..., S.PHI] = (p.g_Phi * _safe_pow(Afield, p.phi_A) * _safe_pow(Q, p.phi_Q)
-                          * _safe_pow(E, p.phi_E) * (1.0 - Phi / p.Phi_max)
+                          * _safe_pow(E, p.phi_E) * (1.0 - Phi / phi_max_eff[:, None])
                           - p.delta_Phi * disruption * Phi)
 
         # chronal tech (section 19)
@@ -562,10 +581,10 @@ class Simulation:
 
     def _sample_field_breakthroughs(self, dt: float) -> None:
         p = self.params
-        # Only nodes still below the Field-mastery ceiling can have a Field
-        # paradigm jump; the knowledge dependence is bounded to avoid a storm of
-        # events once field science is deep.
-        headroom = self.x[..., S.PHI] < (p.Phi_max - 1.0e-3)
+        # Only nodes still below the civilization's *effective* Field ceiling
+        # (the K-coupled limit) can have a Field paradigm jump -- so Field
+        # mastery cannot jump past the energy the civilization commands.
+        headroom = self.x[..., S.PHI] < (self._phi_max_eff[:, None] - 1.0e-3)
         occ = self.occ.astype(bool) & headroom
         lam = p.lam_Phi_jump * (1 + np.tanh(self.A_dom[..., S.DOM_FIELD] / 10.0))
         prob = 1 - np.exp(-lam * dt)
@@ -702,7 +721,11 @@ class Simulation:
             Phi = self.x[a, occ_nodes, S.PHI]
             strength = (p.col_lam0 * _safe_pow(Y, p.col_chi_Y) * _safe_pow(E, p.col_chi_E)
                         * _safe_pow(Phi, p.col_chi_Phi))                 # (k,)
-            d = dfield[np.ix_(occ_nodes, empty)]                          # (k, m)
+            # OCT depth reach (Ship-Relative Speed Law): a deeper ship is a
+            # faster ship, so diving deeper shortens the effective Field route.
+            depth = S.oct_depth_index(float(np.max(Phi)))
+            route_factor = 1.0 + 2.0 * depth
+            d = dfield[np.ix_(occ_nodes, empty)] / route_factor          # (k, m)
             lam = strength[:, None] * np.exp(-d / p.col_length)
             lam = np.where(np.isfinite(d), lam, 0.0)
             prob = 1 - np.exp(-lam * dt)
@@ -865,9 +888,15 @@ class Simulation:
         self.war_state[b, :] = self.war_state[:, b] = False
         self.events.append(EventRecord(self.t, "merger", a, -1, f"absorbed {b}"))
 
-    # -- aeonic (sections 33-34) -----------------------------------------
+    # -- aeonic (sections 33-34): Penrose-CCC conformal crossover --------
+    # Reframed for QTR v2: this is NOT travel between parallel universes. A
+    # conformal crossover is a rare continuation of THIS universe's own
+    # lifecycle, and it is only on the table if the universe's sampled fate is
+    # Penrose CCC. A late universe-scale intelligence may witness the boundary.
     def _sample_aeonic(self, dt: float) -> None:
         p = self.params
+        if self.cosmic_fate != "ccc":
+            return
         for a in self.alive_indices():
             if self.t - self.last_aeon[a] < p.aeon_cooldown:
                 continue
@@ -898,7 +927,7 @@ class Simulation:
                 self.universe_idx[a] = self.aeon_count[a] % p.aeon_prime
                 self.last_aeon[a] = self.t
                 self.events.append(EventRecord(self.t, "aeonic_transition", a, best,
-                                               f"aeon {self.aeon_count[a]} (U{self.universe_idx[a]})"))
+                                               f"conformal crossover -> aeon {self.aeon_count[a]}"))
 
     # -- constraints (section 39) ----------------------------------------
     def enforce_constraints(self) -> None:
@@ -956,6 +985,7 @@ class Simulation:
             K = (np.log10(max(Etot, TINY)) - p.kardashev_k0) / p.kardashev_dk
             phi = float(np.max(self.x[a, nodes, S.PHI]))
             level, era_en, era_it = S.civ_era(K, phi)
+            oct_level, vclass, vname = S.oct_reach(phi)
             rec["max_era"] = max(rec["max_era"], level)
             rec["civ"][int(a)] = {
                 "P": float(np.sum(self.x[a, nodes, S.P])),
@@ -973,7 +1003,9 @@ class Simulation:
                 "era_level": level,
                 "era": era_en,
                 "era_it": era_it,
-                "universe": int(self.universe_idx[a]),
+                "oct": oct_level,
+                "vessel": vclass,
+                "vessel_name": vname,
                 "aeon": int(self.aeon_count[a]),
             }
         self.records.append(rec)

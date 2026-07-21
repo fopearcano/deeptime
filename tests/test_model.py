@@ -103,13 +103,15 @@ def test_civ_era_ladder_monotonic():
     assert S.civ_era(0.7, 0.0)[0] == 1
     assert S.civ_era(1.2, 1.0)[1] == "Solar"
     assert S.civ_era(2.2, 2.0)[1] == "Interstellar"
-    assert S.civ_era(2.8, 3.0)[1] == "Galactic"
-    assert S.civ_era(4.5, 6.5)[0] == 7
-    # both thresholds required: high Phi but low K cannot be top era
+    assert S.civ_era(3.1, 3.1)[1] == "Galactic"    # Galactic needs K>=3 and Phi>=3
+    assert S.civ_era(3.1, 4.1)[1] == "Oceanic"     # Oceanic needs K>=3 and Phi>=4
+    assert S.civ_era(4.6, 6.5)[0] == 7             # Chronal needs K>=4.5 and Phi>=6
+    # both thresholds required: high Phi but low K cannot be top era (K-Phi coupling)
     assert S.civ_era(0.5, 6.5)[0] < 7
+    assert S.civ_era(6.0, 3.0)[0] < 5              # high K but shallow Field stalls below Oceanic
     # non-decreasing in both arguments
     prev = 0
-    for K, Phi in [(0.5, 0.2), (1.1, 1.1), (2.1, 2.1), (2.6, 3.1), (3.1, 3.6), (3.9, 4.6), (4.3, 6.1)]:
+    for K, Phi in [(0.5, 0.2), (1.1, 1.1), (2.1, 2.1), (3.1, 3.1), (3.1, 4.1), (4.1, 5.1), (4.6, 6.1)]:
         lvl = S.civ_era(K, Phi)[0]
         assert lvl >= prev
         prev = lvl
@@ -133,6 +135,34 @@ def test_cosmic_year_mapping_monotonic():
     assert abs(sim.cosmic_years(40) - 5e11) / 5e11 < 1e-6
     ys = [sim.cosmic_years(t) for t in range(0, 41, 5)]
     assert all(ys[i] < ys[i + 1] for i in range(len(ys) - 1))
+
+
+def test_oct_reach_and_vessel_classes():
+    # OCT depth reach rises with Field mastery; the Formless is Chronal-only
+    assert S.oct_reach(0.5)[1] == "Class 0"
+    assert S.oct_reach(2.5)[1] == "Class I"
+    assert S.oct_reach(3.5)[1] == "Class II"
+    assert S.oct_reach(4.5)[1] == "Class III"
+    assert S.oct_reach(6.2)[2] == "the Formless"
+    assert S.oct_reach(5.9)[2] != "the Formless"      # Eonic is not yet Formless
+    depths = [S.oct_depth_index(p) for p in [1, 2.5, 3.5, 4.5, 6.2]]
+    assert all(depths[i] <= depths[i + 1] for i in range(len(depths) - 1))
+
+
+def test_cosmic_fate_distribution_and_ccc_gating():
+    from collections import Counter
+    fates = Counter()
+    for seed in range(200):
+        fates[Simulation(params=Params(n_nodes=6, n_civ=1, t_max=1, seed=seed)).cosmic_fate] += 1
+    # heat death is the modal fate (~45%); every fate key is valid
+    assert fates["heat_death"] > fates["ccc"] > 0
+    assert set(fates).issubset({f[0] for f in S.COSMIC_FATES})
+    # conformal crossovers only ever happen in a CCC-fate universe
+    for seed in range(12):
+        sim = Simulation(params=Params(n_nodes=16, n_civ=3, t_max=40, seed=seed))
+        sim.run(record_every=8)
+        if any(e.kind == "aeonic_transition" for e in sim.events):
+            assert sim.cosmic_fate == "ccc"
 
 
 def test_snapshot_has_ladder_and_cosmos():

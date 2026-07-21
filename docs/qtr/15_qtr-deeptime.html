@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEEP TIME // The Civilizational Ladder — QTR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b0d;--bg2:#0a0f12;--panel:#0b1215;
+  --red:#38d4e6;--red-d:#1f9aa8;--red-dd:#0c4b55;--red-glow:rgba(56,212,230,.55);
+  --amber:#8fdbe6;--amber-d:#4f9aa6;--gold:#b8e8ef;
+  --blue:#3f7ddd;--blue-l:#6fa8ff;--violet:#8b7dd8;--green:#7ec885;--teal:#4fc2a8;
+  --ink:#d6e0e2;--ink-d:#8a9498;--ink-dd:#586064;
+  --line:rgba(56,212,230,.22);--line-amber:rgba(143,219,230,.20);--line-blue:rgba(63,125,221,.28);
+  --grid:rgba(56,212,230,.045);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Lora',Georgia,serif;font-weight:400;line-height:1.7;overflow-x:hidden;letter-spacing:.01em}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse 120% 100% at 50% 0%,#000 30%,transparent 90%)}
+.mono{font-family:'Lora',Georgia,serif}
+
+.frame{position:relative}
+.frame>.br{position:absolute;width:14px;height:14px;border:1px solid var(--red);pointer-events:none;z-index:3}
+.br.tl{top:-1px;left:-1px;border-right:0;border-bottom:0}.br.tr{top:-1px;right:-1px;border-left:0;border-bottom:0}
+.br.bl{bottom:-1px;left:-1px;border-right:0;border-top:0}.br.br2{bottom:-1px;right:-1px;border-left:0;border-top:0}
+
+.topbar{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;gap:18px;height:30px;padding:0 16px;background:linear-gradient(180deg,rgba(7,11,13,.96),rgba(7,11,13,.82));border-bottom:1px solid var(--line);font-family:'Lora',Georgia,serif;font-size:10px;letter-spacing:.18em;color:var(--ink-d);text-transform:uppercase;backdrop-filter:blur(6px)}
+.topbar .dot{width:7px;height:7px;background:var(--red);box-shadow:0 0 8px var(--red-glow);animation:blink 2.4s steps(1) infinite}
+@keyframes blink{0%,70%{opacity:1}71%,100%{opacity:.25}}
+.topbar .sep{color:var(--red-dd)}.topbar .right{margin-left:auto;display:flex;gap:18px;align-items:center}.topbar .clk{color:var(--amber)}
+@media(max-width:680px){.topbar .hideS{display:none}}
+
+.nav{position:fixed;top:30px;left:0;right:0;z-index:999;display:flex;align-items:center;gap:2px;padding:0 14px;height:38px;background:rgba(10,15,18,.9);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav .brand{font-family:'Lora',Georgia,serif;font-weight:700;font-size:14px;letter-spacing:.22em;color:var(--red);text-shadow:0 0 12px var(--red-glow);margin-right:18px;white-space:nowrap}
+.nav a{font-family:'Lora',Georgia,serif;font-size:10.5px;letter-spacing:.13em;color:var(--ink-d);text-decoration:none;text-transform:uppercase;padding:5px 11px;white-space:nowrap;border:1px solid transparent;transition:all .18s}
+.nav a:hover{color:var(--amber);border-color:var(--line-amber)}
+.nav a.on{color:var(--red);border-color:var(--line);background:rgba(56,212,230,.06)}
+.nav .navtag{margin-left:auto;color:var(--ink-dd);font-family:'Lora';font-size:9px;letter-spacing:.2em;white-space:nowrap}
+@media(max-width:1080px){.nav .navtag{display:none}}
+
+.wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 20px}
+section{padding:70px 0;border-bottom:1px solid var(--line);position:relative}
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-family:'Lora',Georgia,serif;font-size:10px;letter-spacing:.28em;color:var(--red);text-transform:uppercase;flex-wrap:wrap}
+.eyebrow::before{content:'';width:26px;height:1px;background:var(--red);box-shadow:0 0 6px var(--red-glow)}
+.eyebrow .idx{color:var(--amber)}
+h1{font-family:'Lora',Georgia,serif;font-weight:700;letter-spacing:.02em;line-height:1.04}
+h2{font-family:'Lora',Georgia,serif;font-weight:600;font-size:clamp(26px,4vw,42px);letter-spacing:.01em;line-height:1.1;color:#e6eff1}
+h3{font-family:'Lora',Georgia,serif;font-weight:600;font-size:18px;letter-spacing:.03em;color:#dfe9eb}
+.lead{max-width:820px;color:var(--ink);font-size:16px;margin-top:14px}
+.muted{color:var(--ink-d)}.amber{color:var(--amber)}.redt{color:var(--red)}.bluet{color:var(--blue-l)}.violett{color:var(--violet)}.greent{color:var(--green)}.goldt{color:var(--gold)}
+
+/* hero */
+.hero{min-height:92vh;padding:120px 0 56px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.hero-bloom{position:absolute;top:12%;right:3%;width:min(600px,62vw);height:min(440px,48vw);background:radial-gradient(ellipse at center,rgba(56,212,230,.16),rgba(139,125,216,.06) 46%,transparent 72%);filter:blur(24px);pointer-events:none;z-index:0}
+.hero-inner{position:relative;z-index:2}
+.hero h1{font-size:clamp(44px,9.4vw,124px);color:#eef5f6}
+.hero h1 .fill{color:var(--red);text-shadow:0 0 34px var(--red-glow)}
+.hero .sub{font-family:'Lora',Georgia,serif;font-size:clamp(11px,1.6vw,14px);letter-spacing:.24em;color:var(--red);margin-top:24px;text-transform:uppercase;max-width:860px}
+.hero .desc{max-width:760px;margin-top:22px;color:var(--ink);font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.chip{font-family:'Lora',Georgia,serif;font-size:10px;letter-spacing:.12em;color:var(--ink-d);text-transform:uppercase;padding:6px 11px;border:1px solid var(--line);background:rgba(56,212,230,.03)}
+.chip b{color:var(--amber);font-weight:600}
+
+/* ===== ERA LADDER (interactive) ===== */
+.ladder-wrap{display:grid;grid-template-columns:1fr 336px;gap:18px;margin-top:30px;align-items:start}
+@media(max-width:980px){.ladder-wrap{grid-template-columns:1fr}}
+.ladder-stage{border:1px solid var(--line);background:linear-gradient(180deg,rgba(139,125,216,.05),rgba(7,11,13,.5) 40%,rgba(56,212,230,.05));position:relative;overflow:hidden}
+#ladderSvg{display:block;width:100%;height:auto}
+.era-read{border:1px solid var(--line);background:linear-gradient(180deg,rgba(11,18,21,.92),rgba(7,11,13,.75));position:sticky;top:82px;min-height:420px}
+.era-read .er-head{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.er-lvl{font-family:'Lora';font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.er-name{font-family:'Lora',Georgia,serif;font-weight:700;font-size:23px;color:#eef5f6;line-height:1.08}
+.er-when{font-family:'Lora';font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-d);margin-top:4px}
+.er-body{padding:16px 20px 20px}
+.er-kp{display:flex;gap:10px;margin-bottom:14px}
+.er-kp .kpc{flex:1;border:1px solid var(--line);padding:9px 11px;text-align:center;background:rgba(56,212,230,.03)}
+.er-kp .kpk{font-family:'Lora';font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dd)}
+.er-kp .kpv{font-family:'Lora',Georgia,serif;font-weight:700;font-size:20px;color:var(--red);line-height:1.1;margin-top:3px}
+.er-kp .kpc.phi .kpv{color:var(--violet)}
+.er-attrs{list-style:none;margin:6px 0 14px}
+.er-attrs li{position:relative;padding-left:16px;font-size:13.5px;color:var(--ink);margin-bottom:5px}
+.er-attrs li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:6px;background:var(--red);box-shadow:0 0 6px var(--red-glow)}
+.er-codex{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.er-codex .ck{font-family:'Lora';font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.er-codex .cv{font-size:13px;color:var(--ink-d)}
+.ladder-hint{font-family:'Lora';font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dd);margin-top:14px;text-align:center}
+
+/* generic ladder / table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);margin-top:22px}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th{font-family:'Lora';font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);background:rgba(56,212,230,.04);white-space:nowrap}
+td{padding:10px 13px;border-bottom:1px dashed var(--line);font-size:13.5px;color:var(--ink);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:rgba(56,212,230,.03)}
+td .sym{font-family:'Lora',Georgia,serif;font-weight:700;color:var(--violet)}
+td .kx{font-family:'Lora',Georgia,serif;font-weight:700;color:var(--red)}
+
+/* K scale row */
+.kscale{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:20px}
+@media(max-width:820px){.kscale{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.kscale{grid-template-columns:repeat(2,1fr)}}
+.ks{border:1px solid var(--line);padding:13px 12px;text-align:center;background:linear-gradient(180deg,rgba(11,18,21,.6),rgba(10,15,18,.4))}
+.ks .ksk{font-family:'Lora',Georgia,serif;font-weight:700;font-size:22px;color:var(--red);text-shadow:0 0 12px var(--red-glow)}
+.ks .ksn{font-family:'Lora';font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-d);margin-top:6px}
+
+/* two-col */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);padding:20px;background:linear-gradient(180deg,rgba(11,18,21,.7),rgba(10,15,18,.5));position:relative}
+.panel .pk{font-family:'Lora';font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.panel p{font-size:14px;color:var(--ink-d)}
+.callout{margin-top:22px;border:1px solid var(--line);border-left:2px solid var(--red);padding:16px 20px;background:linear-gradient(90deg,rgba(56,212,230,.06),transparent);font-size:15px;color:var(--ink)}
+.callout b{color:var(--red);font-weight:600}
+
+/* cosmo availability strip */
+.cosmo-strip{border:1px solid var(--line);background:linear-gradient(180deg,rgba(11,18,21,.7),rgba(7,11,13,.5));margin-top:24px;position:relative;overflow:hidden}
+#cosmoSvg{display:block;width:100%;height:auto}
+
+/* fate cards */
+.fates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+@media(max-width:900px){.fates{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.fates{grid-template-columns:1fr}}
+.fate{border:1px solid var(--line);padding:16px 16px 14px;background:linear-gradient(180deg,rgba(11,18,21,.65),rgba(10,15,18,.5));position:relative;border-top:2px solid var(--fc,var(--red))}
+.fate .fn{font-family:'Lora',Georgia,serif;font-weight:700;font-size:16px;color:#eef5f6;line-height:1.1;padding-right:44px}
+.fate .fw{position:absolute;top:12px;right:14px;font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:var(--fc,var(--red))}
+.fate .frow{display:flex;gap:8px;font-size:12px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.fate .frow:first-of-type{margin-top:10px}
+.fate .frow:last-child{border-bottom:0}
+.fate .fk{color:var(--ink-dd);text-transform:uppercase;font-size:8.5px;letter-spacing:.08em;min-width:78px;padding-top:2px}
+.fate .fv{color:var(--ink);flex:1}
+.fate-note{font-family:'Lora';font-size:11px;letter-spacing:.06em;color:var(--ink-dd);text-transform:uppercase;margin-top:14px;text-align:center}
+
+/* aeon cycle */
+.aeon{display:flex;flex-wrap:wrap;align-items:center;gap:0;margin-top:24px;border:1px solid var(--line);padding:20px;background:linear-gradient(180deg,rgba(139,125,216,.05),rgba(7,11,13,.4))}
+.aeon .st{flex:1;min-width:120px;text-align:center;padding:10px 8px;position:relative}
+.aeon .st .sn{font-family:'Lora',Georgia,serif;font-weight:600;font-size:13px;color:var(--gold);line-height:1.2}
+.aeon .st .si{font-family:'Lora';font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dd);margin-top:6px}
+.aeon .ar{color:var(--red);font-size:16px;flex:0 0 auto;opacity:.7}
+.aeon .st.cross .sn{color:var(--red);text-shadow:0 0 12px var(--red-glow)}
+.inf-tax{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+@media(max-width:900px){.inf-tax{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.inf-tax{grid-template-columns:1fr}}
+.inf{border:1px solid var(--line);padding:14px;background:rgba(10,15,18,.5)}
+.inf .it{font-family:'Lora',Georgia,serif;font-weight:600;font-size:14px;color:var(--violet);line-height:1.2}
+.inf .id{font-size:12px;color:var(--ink-d);margin-top:6px}
+
+/* species */
+.rules{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.rule{font-family:'Lora';font-size:11px;letter-spacing:.04em;color:var(--ink);padding:8px 13px;border:1px solid var(--line);background:rgba(56,212,230,.03)}
+.bodyplans{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
+.bp{font-family:'Lora';font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);padding:6px 11px;border:1px solid var(--line-amber)}
+.species{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:24px}
+@media(max-width:760px){.species{grid-template-columns:1fr}}
+.sp{border:1px solid var(--line);padding:16px 18px;background:linear-gradient(180deg,rgba(11,18,21,.65),rgba(10,15,18,.5));position:relative;transition:border-color .18s}
+.sp:hover{border-color:var(--red)}
+.sp .sname{font-family:'Lora',Georgia,serif;font-weight:700;font-size:16px;color:#eef5f6;line-height:1.15;padding-right:80px}
+.sp .plaus{position:absolute;top:15px;right:16px;font-family:'Lora';font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid currentColor}
+.pl-HIGH{color:var(--green)}.pl-MEDIUM{color:var(--amber)}.pl-LOWMEDIUM{color:var(--gold)}.pl-LOW{color:var(--violet)}
+.sp .smeta{font-family:'Lora';font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dd);margin:8px 0 9px}
+.sp .snote{font-size:13px;color:var(--ink-d)}
+.selfref{display:flex;flex-wrap:wrap;align-items:center;gap:0;margin-top:24px;border:1px solid var(--line);padding:16px;background:rgba(10,15,18,.5)}
+.selfref .sr{flex:1;min-width:96px;text-align:center;font-family:'Lora';font-size:11px;letter-spacing:.04em;color:var(--ink);padding:6px 6px}
+.selfref .sr.last{color:var(--red);font-weight:700}
+.selfref .ar{color:var(--ink-dd);font-size:13px;flex:0 0 auto}
+.plaus-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-family:'Lora';font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-d)}
+.plaus-legend span{display:flex;align-items:center;gap:6px}
+.plaus-legend i{width:10px;height:10px;display:inline-block}
+
+/* math */
+.eq{border:1px solid var(--line);border-left:2px solid var(--violet);background:rgba(139,125,216,.05);padding:14px 16px;margin-top:14px}
+.eq .eqk{font-family:'Lora';font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.eq .tag{color:var(--ink-dd)}
+.eq code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;font-size:13.5px;color:#dfe9eb;letter-spacing:0;display:block;white-space:pre-wrap;line-height:1.6}
+.statevec{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;font-size:14px;color:var(--amber);letter-spacing:0;background:rgba(56,212,230,.05);border:1px solid var(--line);padding:12px 14px;margin-top:16px;overflow-x:auto}
+
+footer{padding:52px 0 80px;text-align:center;border-bottom:0}
+footer .fr{font-family:'Lora';font-size:10px;letter-spacing:.2em;color:var(--ink-dd);text-transform:uppercase;line-height:2}
+footer .big{font-family:'Lora',Georgia,serif;font-weight:700;font-size:clamp(18px,2.8vw,28px);color:var(--red-d);letter-spacing:.03em;margin:16px 0;text-shadow:0 0 20px rgba(56,212,230,.25)}
+
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--red-dd);border:2px solid var(--bg)}::-webkit-scrollbar-thumb:hover{background:var(--red-d)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<!-- ======== GLOBAL NAVIGATION MENU ======== -->
+<button id="qtrMenuBtn" type="button" aria-label="Open navigation menu" aria-haspopup="dialog">&#9776;&nbsp; Menu</button>
+<div id="qtrMenuOverlay" class="qtr-menu-ov" role="dialog" aria-modal="true" aria-label="Main navigation">
+  <nav class="qtr-menu-panel">
+    <div class="qtr-menu-head">
+      <span class="qtr-menu-title">QTR System &middot; Navigation</span>
+      <button type="button" class="qtr-menu-close" aria-label="Close menu">&#10005;</button>
+    </div>
+    <a class="qtr-menu-home" href="../index.html">&#8962;&nbsp; Home &middot; Master Index</a>
+    <div class="qtr-menu-g sys">
+      <div class="qtr-menu-gh">The QTR System</div>
+      <a class="mi" href="01_qtr-codex.html"><b>01</b><span>Operational Codex</span></a>
+      <a class="mi" href="02_qtr-reconciliation-codex.html"><b>02</b><span>Reconciliation</span></a>
+      <a class="mi" href="03_cartography-omniverse.html"><b>03</b><span>Cartography</span></a>
+      <a class="mi" href="04_qtr-map.html"><b>04</b><span>Atlas Map</span></a>
+      <a class="mi" href="05_qtr-bestiary.html"><b>05</b><span>Bestiary</span></a>
+      <a class="mi" href="06_qtr-glossary.html"><b>06</b><span>Glossary</span></a>
+      <a class="mi" href="07_qtr-time-codex.html"><b>07</b><span>Reckoning</span></a>
+      <a class="mi" href="08_qtr-timelines.html"><b>08</b><span>Two Timelines</span></a>
+      <a class="mi" href="15_qtr-deeptime.html"><b>15</b><span>Deep Time</span></a>
+    </div>
+    <div class="qtr-menu-g lang">
+      <div class="qtr-menu-gh">The QTR Languages</div>
+      <a class="mi" href="../qtr-languages/09_qtr-language-codex.html"><b>09</b><span>Language Codex</span></a>
+      <a class="mi" href="../qtr-languages/10_qtr-phrasebook.html"><b>10</b><span>Phrasebook</span></a>
+      <a class="mi" href="../qtr-languages/11_qtr-script.html"><b>11</b><span>Navcher Script</span></a>
+      <a class="mi" href="../qtr-languages/12_qtr-sound.html"><b>12</b><span>Sound & Rhythm</span></a>
+      <a class="mi" href="../qtr-languages/13_qtr-sisters.html"><b>13</b><span>The Sisters</span></a>
+      <a class="mi" href="../qtr-languages/14_qtr-nubhel.html"><b>14</b><span>Nubhel</span></a>
+    </div>
+  </nav>
+</div>
+
+<style id="qtrMenuStyle">
+#qtrMenuBtn{position:fixed;bottom:20px;right:20px;z-index:4000;--m-acc:var(--red,var(--cy,#38d4e6));
+  font-family:'Lora',Georgia,serif;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--m-acc);background:rgba(6,9,11,.86);border:1px solid var(--m-acc);padding:11px 17px;cursor:pointer;
+  backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(0,0,0,.5),0 0 10px -4px var(--m-acc);transition:all .18s}
+#qtrMenuBtn:hover{color:#04070a;background:var(--m-acc);box-shadow:0 0 22px -4px var(--m-acc)}
+.qtr-menu-ov{position:fixed;inset:0;z-index:3999;--m-acc:var(--red,var(--cy,#38d4e6));
+  background:rgba(3,5,7,.74);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .22s}
+.qtr-menu-ov.open{opacity:1;pointer-events:auto}
+.qtr-menu-panel{position:absolute;top:0;right:0;height:100%;width:min(384px,90vw);overflow-y:auto;
+  background:var(--panel,#0a0d10);border-left:1px solid var(--m-acc);box-shadow:-18px 0 50px -20px #000;
+  transform:translateX(100%);transition:transform .26s cubic-bezier(.2,.8,.2,1);padding:0 0 40px}
+.qtr-menu-ov.open .qtr-menu-panel{transform:none}
+.qtr-menu-head{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;background:var(--panel,#0a0d10);border-bottom:1px solid var(--m-acc);z-index:1}
+.qtr-menu-title{font-family:'Lora',Georgia,serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--m-acc)}
+.qtr-menu-close{font-family:'Lora',Georgia,serif;font-size:16px;line-height:1;color:var(--ink-d,#8a9498);background:none;
+  border:1px solid transparent;cursor:pointer;padding:2px 8px;transition:all .16s}
+.qtr-menu-close:hover{color:var(--m-acc);border-color:var(--m-acc)}
+.qtr-menu-home{display:block;margin:16px 18px 8px;padding:12px 14px;font-family:'Lora',Georgia,serif;font-size:13px;
+  letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--m-acc);
+  border:1px solid var(--m-acc);transition:all .16s}
+.qtr-menu-home:hover{background:var(--m-acc);color:#04070a}
+.qtr-menu-g{margin:10px 18px 0}
+.qtr-menu-gh{font-family:'Lora',Georgia,serif;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-dd,#586064);margin:16px 0 8px;display:flex;align-items:center;gap:10px}
+.qtr-menu-gh::after{content:'';flex:1;height:1px;background:currentColor;opacity:.4}
+.qtr-menu-g.sys .qtr-menu-gh{color:#38d4e6}.qtr-menu-g.lang .qtr-menu-gh{color:#f2c230}
+.qtr-menu-panel a.mi{display:flex;align-items:baseline;gap:11px;padding:9px 12px;text-decoration:none;
+  border:1px solid transparent;border-left:2px solid transparent;transition:all .15s;margin-bottom:2px}
+.qtr-menu-panel a.mi b{font-family:'Lora',Georgia,serif;font-size:12px;font-weight:700;color:var(--ink-dd,#586064);min-width:22px}
+.qtr-menu-panel a.mi span{font-family:'Lora',Georgia,serif;font-size:13.5px;letter-spacing:.03em;color:var(--ink,#d6e0e2);line-height:1.2}
+.qtr-menu-g.sys a.mi:hover{border-left-color:#38d4e6;background:rgba(56,212,230,.07)}
+.qtr-menu-g.lang a.mi:hover{border-left-color:#f2c230;background:rgba(242,194,48,.07)}
+.qtr-menu-g.sys a.mi:hover b,.qtr-menu-g.sys a.mi.current b{color:#38d4e6}
+.qtr-menu-g.lang a.mi:hover b,.qtr-menu-g.lang a.mi.current b{color:#f2c230}
+.qtr-menu-g.sys a.mi.current{border-left-color:#38d4e6;background:rgba(56,212,230,.12)}
+.qtr-menu-g.lang a.mi.current{border-left-color:#f2c230;background:rgba(242,194,48,.12)}
+.qtr-menu-panel a.mi.current span{color:#fff}
+.qtr-menu-panel a.mi.current::after{content:'\25C0';margin-left:auto;font-size:9px;color:inherit;opacity:.7}
+@media(prefers-reduced-motion:reduce){#qtrMenuBtn,.qtr-menu-ov,.qtr-menu-panel{transition:none!important}}
+</style>
+
+<script>
+(function(){
+  var btn=document.getElementById('qtrMenuBtn'),ov=document.getElementById('qtrMenuOverlay');
+  if(!btn||!ov)return;
+  function open(){ov.classList.add('open');document.documentElement.style.overflow='hidden';}
+  function close(){ov.classList.remove('open');document.documentElement.style.overflow='';}
+  btn.addEventListener('click',open);
+  ov.addEventListener('click',function(e){if(e.target===ov||e.target.closest('.qtr-menu-close'))close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  var here=(location.pathname.split('/').pop()||'index.html');
+  ov.querySelectorAll('a.mi').forEach(function(a){
+    if((a.getAttribute('href').split('/').pop())===here){a.classList.add('current');a.setAttribute('aria-current','page');}
+  });
+})();
+</script>
+
+<!-- ======== /GLOBAL NAVIGATION MENU ======== -->
+
+<div class="topbar">
+  <span class="dot"></span><span>PELAGIAN ASSEMBLY</span>
+  <span class="sep hideS">/</span><span class="hideS">DEEP-TIME CODEX REV 1.0</span>
+  <div class="right"><span class="hideS mono">K · Φ · ΛCDM · CCC</span><span class="sep">/</span><span class="clk mono" id="clk">00:00:00</span></div>
+</div>
+
+<nav class="nav">
+  <span class="brand">DEEPTIME</span>
+  <a href="../index.html" style="color:var(--red)">⌂ HOME</a>
+  <a href="#top" class="on">OVERVIEW</a>
+  <a href="#ladder">ERA LADDER</a>
+  <a href="#coupling">K ↔ Φ</a>
+  <a href="#cosmos">COSMIC SUBSTRATE</a>
+  <a href="#species">SPECIES</a>
+  <a href="#math">THE MATHEMATICS</a>
+  <span class="navtag">TEMPO PROFONDO DELLE CIVILTÀ</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-bloom"></div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow"><span class="idx">15</span> OPERATIONAL CODEX · THE CIVILIZATIONAL LAYER</div>
+    <h1>DEEP <span class="fill">TIME</span></h1>
+    <p class="sub">The seven-level era ladder — civilizations climbing the coupled axes of energy mastery K and Field mastery Φ, from contemporary Earth to universal self-reference, across the deep future of a ΛCDM cosmos and its aeons</p>
+    <p class="desc">This is the QTR substrate read forward in time. Where the codex describes the physics of the structured vacuum, deep time asks what <em>rides</em> it: an ecology of possible civilizations, evolving over millions to billions of years, mastering the Field the codex calls the navigable vacuum. No civilization is the final form; no empire is permanent. The Field is the constant.</p>
+    <div class="chips">
+      <span class="chip">EVOLUTION LEVELS <b>1 → 7</b></span>
+      <span class="chip">ENERGY <b>K &lt;1 → 5</b></span>
+      <span class="chip">FIELD MASTERY <b>Φ₀ → Φ₆</b></span>
+      <span class="chip">HORIZON <b>~10¹⁴ yr</b></span>
+      <span class="chip">NARRATIVE PRESENT <b>50 Gyr</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 01 · ERA LADDER ===== -->
+<section id="ladder">
+  <div class="wrap">
+    <div class="eyebrow"><span class="idx">01</span> THE CIVILIZATIONAL ERA LADDER</div>
+    <h2>Seven rungs, from planet to universe</h2>
+    <p class="lead">A single evolution level (1–7) plotted against logarithmic future time. Each rung couples an energy band <span class="redt">K</span> to a Field band <span class="violett">Φ</span>: deep Field mastery is reserved for powers that also command the energy of their era. Select an era to read its coordinates and its correspondence in the QTR codex.</p>
+
+    <div class="ladder-wrap">
+      <div class="ladder-stage frame">
+        <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br br2"></span>
+        <svg id="ladderSvg" viewBox="0 0 940 560" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="era-read frame" id="eraRead">
+        <span class="br tl"></span><span class="br br2"></span>
+        <div class="er-head">
+          <div class="er-lvl" id="erLvl">LEVEL —</div>
+          <div class="er-name" id="erName">Select an era</div>
+          <div class="er-when" id="erWhen">click a node on the ladder</div>
+        </div>
+        <div class="er-body">
+          <div class="er-kp">
+            <div class="kpc k"><div class="kpk">Energy · K</div><div class="kpv" id="erK">—</div></div>
+            <div class="kpc phi"><div class="kpk">Field · Φ</div><div class="kpv" id="erPhi">—</div></div>
+          </div>
+          <ul class="er-attrs" id="erAttrs"></ul>
+          <div class="er-codex">
+            <div class="ck">QTR CODEX CORRESPONDENCE</div>
+            <div class="cv" id="erCodex">Field mastery Φ maps to the vacuum-navigation ladder; energy K to the Kardashev domain.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ladder-hint" id="ladderHint">CLICK OR HOVER A NODE — THE NARRATIVE PRESENT SITS AT ~50 Gyr, AT THE CUSP OF OCEANIC AND EONIC</div>
+
+    <div class="callout"><b>The K↔Φ coupling is the core of the model.</b> The two axes stay distinct — communication is not transport, energy is not Field mastery — but they advance <em>together</em>: Oceanic Field mastery (Φ₄) needs galactic energy (K≈3); Eonic and Chronal mastery (Φ₅–₆) need the cosmological-engineering regime (K≈4–5). Superluminal navigation is not travel in time; light bounds ordinary spacetime, while the Field is the navigable substrate.</div>
+
+    <p class="lead" style="font-size:13px;color:var(--ink-d);margin-top:20px"><b class="redt">A caveat on the axis.</b> QTR has no universal clock — proper time is relational and grown (see <em>Reckoning</em>). This ladder plots eras against the ΛCDM cosmological background as a shared <em>coordinate</em>, and reads as deep-time geology in aggregate. It is not a claim that seam- and aeon-crossed civilizations share a synchronized "now": across a seam or an aeon boundary, the offset between two clocks is fundamentally indeterminate.</p>
+  </div>
+</section>
+
+<!-- ===== 02 · K <-> PHI ===== -->
+<section id="coupling">
+  <div class="wrap">
+    <div class="eyebrow"><span class="idx">02</span> THE TWO AXES — ENERGY K &amp; FIELD Φ</div>
+    <h2>Energy you command, Field you can sail</h2>
+    <p class="lead">Two independent masteries. <span class="redt">K</span> is the Kardashev energy domain — <code style="font-family:ui-monospace,monospace;font-size:.9em;color:var(--amber)">K = (log₁₀E − 16) / 6</code> — how much power a civilization controls. <span class="violett">Φ</span> is the Field domain — how deeply it can navigate the structured vacuum the codex calls the navigable Field. Each Φ rung is a capability the codex already names.</p>
+
+    <div class="kscale">
+      <div class="ks"><div class="ksk">&lt;1</div><div class="ksn">Sub-planetary</div></div>
+      <div class="ks"><div class="ksk">K1</div><div class="ksn">Planetary</div></div>
+      <div class="ks"><div class="ksk">K2</div><div class="ksn">Stellar</div></div>
+      <div class="ks"><div class="ksk">K3</div><div class="ksn">Galactic</div></div>
+      <div class="ks"><div class="ksk">K4</div><div class="ksn">Cosmological</div></div>
+      <div class="ks"><div class="ksk">K5</div><div class="ksn">Aeonic</div></div>
+    </div>
+    <p class="lead" style="font-size:13px;color:var(--ink-d);margin-top:14px"><b class="redt">Notation.</b> This <b>K</b> is the <b>Kardashev energy index</b> (Latin K) — how much power a civilization commands. It is <em>not</em> the curvature limit <b>Κ</b> (Greek Kappa) of the constitution axis, which bounds what a universe's laws can be. Energy K is a ladder a civilization climbs; Κ is an edge it cannot cross. Two different letters, two unrelated quantities.</p>
+
+    <h3 style="margin-top:38px">The Field-mastery ladder Φ₀…Φ₆</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Φ</th><th>Capability</th><th>QTR codex correspondence</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sym">Φ₀</span></td><td>Observation of quantum fluctuations</td><td>Effective layer / OCT-0 surface</td></tr>
+          <tr><td><span class="sym">Φ₁</span></td><td>Industrial entanglement, nonlocal comms</td><td>ER = EPR signalling</td></tr>
+          <tr><td><span class="sym">Φ₂</span></td><td>Field propulsion, coastal navigation</td><td>Casimir-corridor sailing</td></tr>
+          <tr><td><span class="sym">Φ₃</span></td><td>Deep-field superluminal navigation</td><td>The dive — the Idrenes Bridge opens at phase-lock (the routine seam-crossing)</td></tr>
+          <tr><td><span class="sym">Φ₄</span></td><td>Large-scale topological engineering (one universe)</td><td>Kindled seam-wells — a black hole lit into a held-open intra-universal gate</td></tr>
+          <tr><td><span class="sym">Φ₅</span></td><td>Cosmological Field integration &amp; universe-scale cognitive networking</td><td>Intergalactic Field integration — the Eonic age's proto-universal self</td></tr>
+          <tr><td><span class="sym">Φ₆</span></td><td>Universal self-reference &amp; possible trans-universal awareness</td><td>Distributed self-modelling of the whole universe; becoming-time (P4) stays conditional</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:38px">Vessel classes — the ships that sail Φ</h3>
+    <p class="lead" style="font-size:14.5px">A vessel never locally exceeds <em>c</em>; its apparent velocity is large only because the Field route is topologically short. A ship's <b>class equals the maximum vacuum depth it can reach</b>, so each archetype spans a <em>range</em> of classes rather than sitting on a single rung — exactly as the operational codex catalogues them.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Archetype</th><th>Class (codex range)</th><th>Specialty</th><th>Vacuum regime</th></tr></thead>
+        <tbody>
+          <tr><td>Casimir Sailer</td><td><span class="kx">Class I</span></td><td>Longitudinal — route</td><td>Surface · Casimir corridors</td></tr>
+          <tr><td>Unruh Catamaran</td><td><span class="kx">Class I–II</span></td><td>Vertical — the dive</td><td>Thermal · the Unruh layer</td></tr>
+          <tr><td>Squeezing Bathyscaphe</td><td><span class="kx">Class I–II</span></td><td>Deep window</td><td>Cold pocket · squeezed sub-vacuum</td></tr>
+          <tr><td>Parker Drifter</td><td><span class="kx">Class 0–I</span></td><td>Cosmological drift — makes no crossing</td><td>Rides the expansion current</td></tr>
+          <tr><td>Penrose Frontier Ship</td><td><span class="kx">Class II–III</span></td><td>Threshold — the seam 𝔍</td><td>Deep-field · the crossing</td></tr>
+          <tr><td>Idrenes Composite</td><td><span class="kx">Class II–ω</span></td><td>All axes</td><td>Down to the causal substrate</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lead" style="font-size:13px;color:var(--ink-d);margin-top:14px">The five named classes: <b>Class 0</b> Crawlers (sub-light) · <b>Class I</b> Bridges (OCT-0, ~10¹⁰ c — the mass-produced standard) · <b>Class II</b> Wanderers (OCT-1, deep-field intergalactic) · <b>Class III</b> Sovereigns (OCT-2, cosmological reach) · <b>Class ω</b> the Formless (OCT-ω, transfinite internal depth). All operate within one universe. Note the Casimir Sailer is an FTL <b>Class I</b> ship — the protagonist's first — not a sub-light Class 0 Crawler.</p>
+
+    <div class="callout" style="margin-top:24px"><b>Three kinds of edge, three doors.</b> The codex keeps them separate, and so does this ladder: the <span class="violett">depth seam 𝔍</span> (the Idrenes Bridge, Φ₃) — a routine dive between OCT rungs, from which you return; <span class="bluet">adjacency</span> (a Penrose bridge) — a sideways move to a remote region of the same universe; and the <span class="redt">constitution edge Κ</span> — the internal limit past which QTR can no longer say what a region becomes, approached but never confirmed crossed. All three stay inside one universe; the routine seam is not the curvature frontier.</div>
+  </div>
+</section>
+
+<!-- ===== 03 · COSMIC SUBSTRATE ===== -->
+<section id="cosmos">
+  <div class="wrap">
+    <div class="eyebrow"><span class="idx">03</span> THE COSMOLOGICAL SUBSTRATE</div>
+    <h2>The universe the drama runs against</h2>
+    <p class="lead">Civilizations do not evolve in a vacuum of infinite resource. Free energy rises as stars ignite, plateaus through the Stelliferous era — which contains the present and the entire civilizational window — then collapses across the Degenerate and Black-Hole eras toward heat death. That falling ceiling is why, in some models, a transition between conformal aeons is imagined as the only way to reset a dying universe's clock — a possible continuation of <em>this</em> universe's cosmological lifecycle, not established travel between universes.</p>
+
+    <div class="cosmo-strip frame">
+      <span class="br tl"></span><span class="br br2"></span>
+      <svg id="cosmoSvg" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <h3 style="margin-top:44px">Six ways a universe may end</h3>
+    <p class="lead" style="font-size:14.5px">Every universe samples one ultimate fate from an observationally-weighted prior. ΛCDM makes <span class="redt">heat death</span> most likely; Penrose's Conformal Cyclic Cosmology is the escape. The weights below are the model's sampling prior.</p>
+    <div class="fates">
+      <div class="fate" style="--fc:var(--blue-l)"><div class="fn">Heat Death / Big Freeze</div><div class="fw">45%</div>
+        <div class="frow"><span class="fk">Beginning</span><span class="fv">one beginning</span></div>
+        <div class="frow"><span class="fk">Expansion</span><span class="fv">eternal</span></div>
+        <div class="frow"><span class="fk">Dark energy</span><span class="fv">stabilizing (positive)</span></div>
+        <div class="frow"><span class="fk">End state</span><span class="fv">freeze</span></div>
+      </div>
+      <div class="fate" style="--fc:var(--red)"><div class="fn">Penrose CCC</div><div class="fw">25%</div>
+        <div class="frow"><span class="fk">Beginning</span><span class="fv">previous aeon</span></div>
+        <div class="frow"><span class="fk">Expansion</span><span class="fv">eternal (each aeon)</span></div>
+        <div class="frow"><span class="fk">Dark energy</span><span class="fv">not central; geometry drives transition</span></div>
+        <div class="frow"><span class="fk">End state</span><span class="fv">next aeon</span></div>
+      </div>
+      <div class="fate" style="--fc:var(--violet)"><div class="fn">Big Rip</div><div class="fw">10%</div>
+        <div class="frow"><span class="fk">Beginning</span><span class="fv">one beginning</span></div>
+        <div class="frow"><span class="fk">Expansion</span><span class="fv">runaway (accelerating)</span></div>
+        <div class="frow"><span class="fk">Dark energy</span><span class="fv">strengthens over time</span></div>
+        <div class="frow"><span class="fk">End state</span><span class="fv">rip</span></div>
+      </div>
+      <div class="fate" style="--fc:var(--green)"><div class="fn">Big Bounce / Oscillatory</div><div class="fw">10%</div>
+        <div class="frow"><span class="fk">Beginning</span><span class="fv">bounce (no first beginning)</span></div>
+        <div class="frow"><span class="fk">Expansion</span><span class="fv">cyclic</span></div>
+        <div class="frow"><span class="fk">Dark energy</span><span class="fv">may vary; often small / cyclic</span></div>
+        <div class="frow"><span class="fk">End state</span><span class="fv">rebirth</span></div>
+      </div>
+      <div class="fate" style="--fc:var(--gold)"><div class="fn">Big Crunch</div><div class="fw">5%</div>
+        <div class="frow"><span class="fk">Beginning</span><span class="fv">one beginning</span></div>
+        <div class="frow"><span class="fk">Expansion</span><span class="fv">reversing</span></div>
+        <div class="frow"><span class="fk">Dark energy</span><span class="fv">weak or turns negative</span></div>
+        <div class="frow"><span class="fk">End state</span><span class="fv">crunch</span></div>
+      </div>
+      <div class="fate" style="--fc:var(--amber)"><div class="fn">Vacuum Decay / False Vacuum</div><div class="fw">5%</div>
+        <div class="frow"><span class="fk">Beginning</span><span class="fv">one beginning</span></div>
+        <div class="frow"><span class="fk">Expansion</span><span class="fv">eternal until transition</span></div>
+        <div class="frow"><span class="fk">Dark energy</span><span class="fv">irrelevant; local transition</span></div>
+        <div class="frow"><span class="fk">End state</span><span class="fv">transition</span></div>
+      </div>
+    </div>
+    <p class="fate-note">MODEL ASSUMPTION · the six are competing, stochastic scenarios for the fate of this one universe — branches in the Deep-Time simulation, not established outcomes, and not evidence of an already-existing multiverse of pocket universes.</p>
+
+    <h3 style="margin-top:44px">The aeon lifecycle — Penrose Conformal Cyclic Cosmology</h3>
+    <p class="lead" style="font-size:14.5px">Proper time of each aeon is infinite; its conformal description is finite. The remote future of one aeon is conformally matched to the Big Bang of the next — <code style="font-family:ui-monospace,monospace;font-size:.9em;color:var(--amber)">T(U_k) → U_{(k+1) mod P}</code>, a linked succession over a prime-length cycle, not a bounce or crunch. <b class="redt">MODEL ASSUMPTION.</b> If it occurs, this is a possible continuation or transformation of <em>this</em> universe's cosmological lifecycle — not routine movement among parallel universes, and not the routine depth-seam <span class="violett">𝔍</span> that ordinary ships cross daily via the Idrenes Bridge. A late universe-scale intelligence might read an aeonic boundary as evidence of a larger context, but that reading stays speculative.</p>
+    <div class="aeon">
+      <div class="st"><div class="sn">Hot beginning</div><div class="si">aeon origin</div></div>
+      <span class="ar">→</span>
+      <div class="st"><div class="sn">Galaxies &amp; stars</div><div class="si">stelliferous</div></div>
+      <span class="ar">→</span>
+      <div class="st"><div class="sn">Black holes</div><div class="si">degenerate</div></div>
+      <span class="ar">→</span>
+      <div class="st"><div class="sn">Extreme dilution</div><div class="si">massless future</div></div>
+      <span class="ar">→</span>
+      <div class="st cross"><div class="sn">Conformal crossover</div><div class="si">aeonic edge · model boundary</div></div>
+      <span class="ar">→</span>
+      <div class="st"><div class="sn">Next hot beginning</div><div class="si">aeon k+1</div></div>
+    </div>
+    <div class="inf-tax">
+      <div class="inf"><div class="it">Infinite future within each aeon</div><div class="id">proper time of each aeon is infinite; its conformal description finite</div></div>
+      <div class="inf"><div class="it">Infinitely many successive aeons</div><div class="id">one linked chain … → U_k → U_{k+1} → … without end</div></div>
+      <div class="inf"><div class="it">Possible parallel chains — POSSIBLE EXTENSION</div><div class="id">independent CCC-like sequences (α, β, γ, …) are a speculative extrapolation, not established QTR physics</div></div>
+      <div class="inf"><div class="it">Infinite spatial extent</div><div class="id">each universe may be spatially unbounded</div></div>
+    </div>
+    <div class="callout" style="margin-top:24px">In the codex, the <b>Tragic-Truth</b> Κ-verdict imagines that a pattern — never the substance — might be translated beyond the system's own descriptive limit: unconfirmable, and never able to signal home. Whether that corresponds to a "different chain" is a philosophical reading, not established physics. CCC, if real, preserves <em>this</em> universe's lifecycle but makes it recurrent — a possible continuation, not a catalogue of parallel universes.</div>
+  </div>
+</section>
+
+<!-- ===== 04 · SPECIES SPECTRUM ===== -->
+<section id="species">
+  <div class="wrap">
+    <div class="eyebrow"><span class="idx">04</span> THE PROJECTED SPECIES SPECTRUM</div>
+    <h2>Who is doing the thinking</h2>
+    <p class="lead">Billions of years ahead, in a multi-galactic future: science-based constraints paired with controlled speculation. Same physics everywhere; energy availability drives complexity; gravity shapes anatomy; convergent evolution repeats useful forms — and regression and simplification also occur.</p>
+
+    <div class="rules">
+      <span class="rule">Same physics, similar constraints</span>
+      <span class="rule">Energy availability drives complexity</span>
+      <span class="rule">Gravity shapes anatomy</span>
+      <span class="rule">Convergent evolution repeats useful forms</span>
+      <span class="rule">Regression and simplification also occur</span>
+    </div>
+
+    <h3 style="margin-top:34px">Five convergent body plans</h3>
+    <div class="bodyplans">
+      <span class="bp">Bilateral walkers</span><span class="bp">Swimmers</span><span class="bp">Gliders</span><span class="bp">Modular colonies</span><span class="bp">Distributed swarms</span>
+    </div>
+
+    <div class="species">
+      <div class="sp"><div class="plaus pl-HIGH">HIGH</div><div class="sname">Neo-Sapiens Federates</div><div class="smeta">bilateral walkers · standard worlds · post-biological</div><div class="snote">Humanoid descendants; enhanced cognition, social bandwidth, interstellar culture.</div></div>
+      <div class="sp"><div class="plaus pl-HIGH">HIGH</div><div class="sname">Regressive Human Offshoots</div><div class="smeta">bilateral walkers · harsh / isolated worlds · baseline</div><div class="snote">Isolated descendant clades; specialized, simplified, locally adapted.</div></div>
+      <div class="sp"><div class="plaus pl-HIGH">HIGH</div><div class="sname">High-Gravity Compact Toolmakers</div><div class="smeta">bilateral walkers · high-gravity worlds · baseline</div><div class="snote">Short, dense, powerful bodies; strong bilateral manipulators.</div></div>
+      <div class="sp"><div class="plaus pl-MEDIUM">MEDIUM</div><div class="sname">Low-Gravity Tall Gliders</div><div class="smeta">gliders · low-gravity worlds · baseline</div><div class="snote">Elongated frames, membrane locomotion; aerial mobility.</div></div>
+      <div class="sp"><div class="plaus pl-MEDIUM">MEDIUM</div><div class="sname">Oceanic Cephaliform Engineers</div><div class="smeta">swimmers · ocean worlds · collective</div><div class="snote">Tentacular manipulators; distributed cognition, sonar and bioluminescent signalling.</div></div>
+      <div class="sp"><div class="plaus pl-LOWMEDIUM">LOW–MED</div><div class="sname">Ammonia-World Chemotroph Intellects</div><div class="smeta">modular colonies · cold / ammonia worlds · baseline</div><div class="snote">Cold, slow biochemistry; alternative-solvent life where plausible.</div></div>
+      <div class="sp"><div class="plaus pl-MEDIUM">MEDIUM</div><div class="sname">Colonial Photosynthetic Minds</div><div class="smeta">modular colonies · reef / forest biomes · collective</div><div class="snote">Modular superorganisms; reef- or forest-scale cognition.</div></div>
+      <div class="sp"><div class="plaus pl-HIGH">HIGH</div><div class="sname">Bio-Digital Symbionts</div><div class="smeta">distributed swarms · post-biological substrate · artificial</div><div class="snote">Biology merged with computation; distributed identity across habitats and fleets.</div></div>
+    </div>
+    <div class="plaus-legend">
+      <span><i style="background:var(--green)"></i>HIGH — plausible under known physics</span>
+      <span><i style="background:var(--amber)"></i>MEDIUM — environment-dependent</span>
+      <span><i style="background:var(--gold)"></i>LOW–MED — chemically conceivable</span>
+      <span><i style="background:var(--violet)"></i>LOW — extreme environments</span>
+    </div>
+
+    <h3 style="margin-top:44px">From ego to cosmic self-reference</h3>
+    <p class="lead" style="font-size:14.5px">As the era ladder is climbed — over some ~10¹³–10¹⁴ years — identity widens from the individual self toward universal self-reference and, only near the late-Stelliferous horizon, a possible trans-universal awareness (recognition, not travel). This is a narrative / philosophical hypothesis, not established science.</p>
+    <div class="selfref">
+      <span class="sr">Individual self</span><span class="ar">→</span>
+      <span class="sr">Species identity</span><span class="ar">→</span>
+      <span class="sr">Planetary civilization</span><span class="ar">→</span>
+      <span class="sr">Galactic network</span><span class="ar">→</span>
+      <span class="sr">Intergalactic network</span><span class="ar">→</span>
+      <span class="sr">Universal self-reference<br><span style="font-size:8.5px;color:var(--ink-dd)">~10¹³ yr</span></span><span class="ar">→</span>
+      <span class="sr last">Trans-universal awareness<br><span style="font-size:8.5px;color:var(--violet)">~10¹⁴ yr · possible</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 · MATHEMATICS ===== -->
+<section id="math">
+  <div class="wrap">
+    <div class="eyebrow"><span class="idx">05</span> THE MATHEMATICS</div>
+    <h2>A hybrid stochastic dynamical model</h2>
+    <p class="lead">Deep time is not one inevitable future but an <em>ecology of possible histories</em> — probability distributions over millions to billions of years. Four interacting methods drive it: differential equations for the mastery axes, graph dynamics for the Field ocean, agent-based modelling for civilizations and empires, and Monte-Carlo ensembles for the probabilities. Each assumption is tagged empirical <span class="amber">(E)</span>, extrapolative <span class="amber">(X)</span>, or speculative <span class="amber">(S)</span>.</p>
+
+    <div class="statevec">state vector&nbsp;&nbsp;x_i = [ A, E, H, Φ, L, R, C, G, I, M, N ]</div>
+
+    <div class="grid2">
+      <div>
+        <div class="eq"><div class="eqk"><span>Master equation · §24</span><span class="tag">S</span></div><code>dx_i = F(x_i, x_{j≠i}, G_Φ, t) dt  +  Σ dW_t  +  dJ_t</code></div>
+        <div class="eq"><div class="eqk"><span>Scientific growth · §6</span><span class="tag">E</span></div><code>dA/dt = η·Hᵃ·Aᶿ·(1 − A/A_max) − δ_A·D·A + J(t)</code></div>
+        <div class="eq"><div class="eqk"><span>Energy &amp; Kardashev · §7</span><span class="tag">E / X</span></div><code>dE/dt = g_E·Aᵘ·E·(1 − E/E_max) − λ_E·E
+K = (log₁₀E − 16) / 6</code></div>
+        <div class="eq"><div class="eqk"><span>Field mastery · §8</span><span class="tag">S</span></div><code>dΦ/dt = g_Φ·Aᵛ·Hˣ·(1 − Φ/Φ_max) − δ_Φ·D·Φ + J_Φ(t)</code></div>
+      </div>
+      <div>
+        <div class="eq"><div class="eqk"><span>Field distance · §9</span><span class="tag">S</span></div><code>d^Φ_ij = inf_γ ∫_γ n_Φ(x,t) ds</code></div>
+        <div class="eq"><div class="eqk"><span>Travel &amp; relativity · §10–11</span><span class="tag">S / E</span></div><code>τ_ij = d^Φ_ij / v_q + τ_entry + τ_exit + τ_risk
+v_app = d_ij / τ_ij       (may exceed c: topology)
+dτ = dT·√(1 − v²/c²)      (valid locally)</code></div>
+        <div class="eq"><div class="eqk"><span>Aeonic gate · §20, 22</span><span class="tag">S</span></div><code>T(U_k) = U_{(k+1) mod P}      (P prime)
+P_gate = σ[ a₁·Φ + a₂·E' + a₃·A' − a₄·𝓘 − a₅·𝓢 ]</code></div>
+        <div class="eq"><div class="eqk"><span>Collapse hazard · §17</span><span class="tag">E</span></div><code>h_i = h₀·exp[ b₁·C/R + b₂·I + b₃·U + b₄·D − b₅·G − b₆·𝓡 ]</code></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:26px">The engine keeps the two mastery axes <b>separate</b>, treats collapse as <b>normal</b>, and holds relativity valid <b>locally</b> while effective FTL is purely a Field-topology effect. A representative ensemble reaches galactic energy <span class="redt">P(K≥3) ≈ 0.85</span>, the cosmological-engineering regime <span class="redt">P(K≥4) ≈ 0.6–0.7</span>, with Chronal mastery (Φ₆) a rare, late achievement. Most histories culminate in the Eonic age; some reach Chronal; a few stall at Galactic.</div>
+    <p class="lead" style="font-size:13.5px;color:var(--ink-dd);margin-top:20px">Mathematical layer: <span class="mono">fopearcano/qtr-mod1</span> — a dependency-free Python engine binding the <em>Deep-Time Civilizational System</em> guidelines to the QTR codex. This page renders its era ladder, cosmological substrate, and species spectrum.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fr">DEEP TIME · THE CIVILIZATIONAL LAYER OF QTR</div>
+    <div class="big">CIVILIZATION IS A CONTINUOUS PROCESS. THE FIELD IS THE CONSTANT.</div>
+    <div class="fr">SEVEN ERAS · TWO MASTERIES · ONE COSMOS OF AEONS</div>
+  </div>
+</footer>
+
+<script>
+/* live clock */
+function tick(){const d=new Date(),p=n=>String(n).padStart(2,'0'),e=document.getElementById('clk');if(e)e.textContent=p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());}
+setInterval(tick,1000);tick();
+
+/* ===== ERA LADDER interactive SVG ===== */
+const NS='http://www.w3.org/2000/svg';
+const ERAS=[
+ {lvl:1,name:'Contemporary Earth',scale:'Planetary',k:'0.7',phi:'0',t:1e2,tlab:'Today',
+  attrs:['Incomplete planetary civilization','Industrial energy and a global network'],
+  codex:'The effective layer — OCT-0 surface. Physics as coarse statistics; the Field barely observed (Φ₀).'},
+ {lvl:2,name:'Solar civilization',scale:'Solar',k:'1–2',phi:'1',t:1e6,tlab:'~1 Myr',
+  attrs:['Solar System industrialized','First network structures','First proofs of the Field'],
+  codex:'Industrial entanglement — ER=EPR signalling. Nonlocal communication opens (Φ₁); still coastal on the vacuum.'},
+ {lvl:3,name:'Diaspora',scale:'Interstellar',k:'2',phi:'2',t:5e7,tlab:'~10–100 Myr',
+  attrs:['First interstellar colonies','Formation of networks','Instantaneous communication'],
+  codex:'Casimir-corridor sailing (Φ₂). Field propulsion along the shortest vacuum routes; the hazard spine begins to matter.'},
+ {lvl:4,name:'Age of galactic empires',scale:'Galactic',k:'2.5–3',phi:'3',t:1e9,tlab:'~1 Gyr',
+  attrs:['Networks of vast numbers of systems','Millennial longevity','Imperial cycles and refoundations'],
+  codex:'The dive (Φ₃) — deep-field superluminal navigation down the OCT rungs. Empire is centralized in signal, distributed in force.'},
+ {lvl:5,name:'Oceanic age',scale:'Oceanic',k:'3',phi:'3–4',t:1e10,tlab:'~10 Gyr',
+  attrs:['Mapping of the quantum currents','Superluminal-class navigation','Ecosystems of the Field'],
+  codex:'Kindled seam-wells and the Idrenes Bridge (Φ₄) — topological engineering and the first aeonic gates.'},
+ {lvl:6,name:'Eonic age',scale:'Eonic',k:'4–5',phi:'4–5',t:1e11,tlab:'~100 Gyr',
+  attrs:['Intergalactic network integrating','Cosmological-scale cognition emerging','Proto-universal self — still incomplete','Large-scale topological engineering (one universe)','Cosmological-scale routing between remote causal domains'],
+  codex:'Cosmological Field integration (Φ₅) — universe-scale cognitive networking across intergalactic distances. A proto-universal self, not yet complete; no conversion between universes.'},
+ {lvl:7,name:'Chronal age · universal self-reference',scale:'Chronal',k:'5+',phi:'6',t:1e13,tlab:'~10¹³ yr',
+  attrs:['Universal self-reference — a distributed, recursive model of the whole accessible universe','Possible trans-universal awareness near ~10¹⁴ yr — recognition or inference, not travel'],
+  codex:'Universal self-reference (Φ₆) — the universe forms a distributed model of itself. Any becoming-time (P4) effect stays conditional and frame-bound; no universal master clock. Possible trans-universal awareness (recognition, not travel) approaches near the ~10¹⁴-yr horizon.'}
+];
+const NARR={t:5e10,lvl:5.5};
+
+const svg=document.getElementById('ladderSvg');
+const W=940,H=560,x0=88,x1=902,yTop=48,yBot=486;
+const LOGMIN=2,LOGMAX=Math.log10(1e14); // 1e2 .. 1e14 (universal self-reference ~1e13, trans-universal horizon ~1e14)
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function X(t){return x0+(Math.log10(t)-LOGMIN)/(LOGMAX-LOGMIN)*(x1-x0);}
+function Y(lvl){return yBot-(lvl-1)/6*(yBot-yTop);}
+
+function drawLadder(){
+  // grid + y bands
+  for(let l=1;l<=7;l++){
+    const y=Y(l);
+    svg.appendChild(el('line',{x1:x0,y1:y,x2:x1,y2:y,stroke:'rgba(56,212,230,.08)','stroke-width':1}));
+    const scaleLbl=el('text',{x:x0-12,y:y+4,fill:'#8a9498','font-family':'Lora,serif','font-size':11,'text-anchor':'end'});
+    scaleLbl.textContent=l+' · '+ERAS[l-1].scale;svg.appendChild(scaleLbl);
+  }
+  // x ticks
+  const ticks=[[1e2,'Today'],[1e6,'1 Myr'],[1e9,'1 Gyr'],[1e10,'10 Gyr'],[1e11,'100 Gyr'],[1e13,'10¹³ yr'],[1e14,'10¹⁴ yr']];
+  ticks.forEach(([t,lab])=>{
+    const x=X(t);
+    svg.appendChild(el('line',{x1:x,y1:yTop,x2:x,y2:yBot,stroke:'rgba(56,212,230,.05)','stroke-width':1}));
+    const tl=el('text',{x:x,y:yBot+22,fill:'#586064','font-family':'Lora,serif','font-size':10,'text-anchor':'middle'});tl.textContent=lab;svg.appendChild(tl);
+  });
+  // axis labels
+  const ax=el('text',{x:(x0+x1)/2,y:yBot+46,fill:'#8a9498','font-family':'Lora,serif','font-size':11,'text-anchor':'middle','letter-spacing':'2'});ax.textContent='TIME INTO THE FUTURE  (logarithmic)';svg.appendChild(ax);
+  const ay=el('text',{x:20,y:(yTop+yBot)/2,fill:'#8a9498','font-family':'Lora,serif','font-size':11,'text-anchor':'middle','letter-spacing':'2',transform:'rotate(-90 20 '+((yTop+yBot)/2)+')'});ay.textContent='CIVIL & COSMOLOGICAL EVOLUTION LEVEL';svg.appendChild(ay);
+
+  // ascent curve through era nodes (smooth)
+  let d='';
+  ERAS.forEach((e,i)=>{const x=X(e.t),y=Y(e.lvl);if(i===0){d='M '+x+' '+y;}else{const px=X(ERAS[i-1].t),py=Y(ERAS[i-1].lvl);const mx=(px+x)/2;d+=' C '+mx+' '+py+' '+mx+' '+y+' '+x+' '+y;}});
+  // glow underlay
+  svg.appendChild(el('path',{d:d,fill:'none',stroke:'rgba(56,212,230,.25)','stroke-width':7}));
+  svg.appendChild(el('path',{d:d,fill:'none',stroke:'#38d4e6','stroke-width':2.4}));
+
+  // narrative present marker
+  const nx=X(NARR.t),ny=Y(NARR.lvl);
+  svg.appendChild(el('line',{x1:nx,y1:yTop,x2:nx,y2:yBot,stroke:'rgba(143,219,230,.5)','stroke-width':1,'stroke-dasharray':'4 4'}));
+  const npl=el('text',{x:nx,y:yTop-8,fill:'#8fdbe6','font-family':'Lora,serif','font-size':10,'text-anchor':'middle'});npl.textContent='NARRATIVE PRESENT · 50 Gyr';svg.appendChild(npl);
+  svg.appendChild(el('circle',{cx:nx,cy:ny,r:4,fill:'#8fdbe6'}));
+
+  // late-Stelliferous horizon — possible trans-universal awareness (~10^14 yr)
+  const hx=X(1e14);
+  svg.appendChild(el('line',{x1:hx,y1:yTop,x2:hx,y2:yBot,stroke:'rgba(139,125,216,.45)','stroke-width':1,'stroke-dasharray':'2 5'}));
+  const hpl=el('text',{x:hx-5,y:yTop-8,fill:'#8b7dd8','font-family':'Lora,serif','font-size':9,'text-anchor':'end'});hpl.textContent='~10¹⁴ yr · possible trans-universal awareness';svg.appendChild(hpl);
+
+  // era nodes (interactive)
+  ERAS.forEach(e=>{
+    const x=X(e.t),y=Y(e.lvl);
+    const g=el('g',{style:'cursor:pointer'});
+    g.appendChild(el('circle',{cx:x,cy:y,r:16,fill:'transparent'})); // hit area
+    const ring=el('circle',{cx:x,cy:y,r:9,fill:'none',stroke:'#38d4e6','stroke-width':1.5,opacity:.5,class:'ering'});
+    const dot=el('circle',{cx:x,cy:y,r:5.5,fill:'#0b1215',stroke:'#38d4e6','stroke-width':2,class:'edot'});
+    g.appendChild(ring);g.appendChild(dot);
+    const num=el('text',{x:x,y:y-16,fill:'#eef5f6','font-family':'Lora,serif','font-size':13,'font-weight':700,'text-anchor':'middle'});num.textContent=e.lvl;g.appendChild(num);
+    g.addEventListener('mouseenter',()=>select(e,dot,ring));
+    g.addEventListener('click',()=>select(e,dot,ring));
+    svg.appendChild(g);
+    e._dot=dot;e._ring=ring;
+  });
+}
+function select(e,dot,ring){
+  svg.querySelectorAll('.edot').forEach(d=>{d.setAttribute('fill','#0b1215');d.setAttribute('r',5.5);});
+  svg.querySelectorAll('.ering').forEach(r=>{r.setAttribute('opacity',.5);r.setAttribute('r',9);});
+  if(dot){dot.setAttribute('fill','#38d4e6');dot.setAttribute('r',6.5);}
+  if(ring){ring.setAttribute('opacity',1);ring.setAttribute('r',12);}
+  document.getElementById('erLvl').textContent='LEVEL '+e.lvl+' · '+e.scale.toUpperCase();
+  document.getElementById('erName').textContent=e.name;
+  document.getElementById('erWhen').textContent=e.tlab;
+  document.getElementById('erK').textContent=e.k;
+  document.getElementById('erPhi').textContent='Φ'+e.phi;
+  const ul=document.getElementById('erAttrs');ul.innerHTML='';
+  e.attrs.forEach(a=>{const li=document.createElement('li');li.textContent=a;ul.appendChild(li);});
+  document.getElementById('erCodex').textContent=e.codex;
+}
+drawLadder();
+select(ERAS[4],ERAS[4]._dot,ERAS[4]._ring); // default: Oceanic (the narrative present's era)
+
+/* ===== COSMO availability strip ===== */
+(function(){
+  const c=document.getElementById('cosmoSvg');if(!c)return;
+  const W=940,H=300,x0=70,x1=902,yb=210,yt=44;
+  const L0=Math.log10(3.8e5),L1=100; // 3.8e5 .. 1e100 yr absolute age
+  const eX=t=>x0+(Math.log10(t)-L0)/(L1-L0)*(x1-x0);
+  const eY=a=>yb-a*(yb-yt);
+  const eras=[
+    {n:'Dark Ages',s:3.8e5,e:1e8,a:.05,c:'#2a3340',lab:0},
+    {n:'First Stars',s:1e8,e:1e9,a:.6,c:'#3f5a78',lab:0},
+    {n:'Stelliferous',s:1e9,e:1e12,a:1.0,c:'#1f6a78',lab:1},
+    {n:'Late Stellif.',s:1e12,e:1e14,a:.6,c:'#356f78',lab:0},
+    {n:'Degenerate',s:1e14,e:1e40,a:.12,c:'#3a2f5a',lab:1},
+    {n:'Black-Hole',s:1e40,e:1e100,a:.02,c:'#241d38',lab:1}
+  ];
+  const knots=[[3.8e5,0],[1e8,.05],[1e9,.6],[1e10,1],[1e12,1],[1e14,.6],[1e40,.12],[1e100,.02]];
+  // era blocks — label only the wide, legible eras (the early ones are slivers on a log axis)
+  eras.forEach(z=>{
+    const xa=eX(z.s),xb=eX(z.e);
+    c.appendChild(el('rect',{x:xa,y:yt,width:Math.max(xb-xa,1),height:yb-yt,fill:z.c,opacity:.32}));
+    c.appendChild(el('line',{x1:xa,y1:yt,x2:xa,y2:yb,stroke:'rgba(56,212,230,.15)','stroke-width':1}));
+    if(z.lab){const lb=el('text',{x:(xa+xb)/2,y:yb+18,fill:'#8a9498','font-family':'Lora,serif','font-size':9.5,'text-anchor':'middle'});lb.textContent=z.n;c.appendChild(lb);}
+  });
+  // availability curve (free energy ceiling)
+  let d='';
+  knots.forEach((k,i)=>{d+=(i?' L ':'M ')+eX(k[0])+' '+eY(k[1]);});
+  const area=d+' L '+eX(1e100)+' '+yb+' L '+eX(3.8e5)+' '+yb+' Z';
+  c.appendChild(el('path',{d:area,fill:'rgba(56,212,230,.10)'}));
+  c.appendChild(el('path',{d:d,fill:'none',stroke:'#38d4e6','stroke-width':2.2}));
+  // present marker (13.8 Gyr)
+  const px=eX(1.38e10);
+  c.appendChild(el('line',{x1:px,y1:yt,x2:px,y2:yb,stroke:'rgba(143,219,230,.6)','stroke-width':1,'stroke-dasharray':'3 3'}));
+  const pl=el('text',{x:px,y:yt-6,fill:'#8fdbe6','font-family':'Lora,serif','font-size':9.5,'text-anchor':'middle'});pl.textContent='NOW · 13.8 Gyr';c.appendChild(pl);
+  // civ window (to ~1e14 absolute — late Stelliferous horizon)
+  const wx=eX(1e14);
+  c.appendChild(el('rect',{x:px,y:yt,width:Math.max(wx-px,2),height:yb-yt,fill:'rgba(184,232,239,.08)',stroke:'rgba(184,232,239,.4)','stroke-width':1}));
+  // window label placed to the right (its box is a sliver on the log axis), with a leader
+  c.appendChild(el('line',{x1:wx,y1:yt+30,x2:wx+34,y2:yt+30,stroke:'rgba(184,232,239,.4)','stroke-width':1}));
+  const wl=el('text',{x:wx+40,y:yt+33,fill:'#b8e8ef','font-family':'Lora,serif','font-size':9,'text-anchor':'start'});wl.textContent='◂ Civilizational window · today → ~10¹⁴ yr (late Stelliferous)';c.appendChild(wl);
+  // y label
+  const yl=el('text',{x:20,y:(yt+yb)/2,fill:'#8a9498','font-family':'Lora,serif','font-size':10,'text-anchor':'middle','letter-spacing':'1.5',transform:'rotate(-90 20 '+((yt+yb)/2)+')'});yl.textContent='FREE ENERGY';c.appendChild(yl);
+  const xl=el('text',{x:(x0+x1)/2,y:yb+40,fill:'#586064','font-family':'Lora,serif','font-size':10,'text-anchor':'middle','letter-spacing':'1.5'});xl.textContent='ABSOLUTE COSMIC AGE  (log years) → heat death';c.appendChild(xl);
+})();
+
+/* nav scroll-spy (hash links only) */
+const links=[...document.querySelectorAll('.nav a')].filter(l=>(l.getAttribute('href')||'').startsWith('#'));
+const secs=links.map(l=>document.querySelector(l.getAttribute('href')));
+addEventListener('scroll',()=>{let i=0;for(let k=0;k<secs.length;k++){if(secs[k]&&secs[k].getBoundingClientRect().top<140)i=k;}links.forEach((l,k)=>l.classList.toggle('on',k===i));},{passive:true});
+</script>
+</body>
+</html>

@@ -53,6 +53,7 @@
     buildTiers();
     buildEraRef();
     buildCosmoRef();
+    buildQtr();
     loadModelDoc();
     wireButtons();
     window.addEventListener("resize", debounce(() => {
@@ -176,6 +177,10 @@
       frontier: lad.frontier || [], per_civ: lad.per_civ || {},
       year0: lad.year0, year_end: lad.year_end, narrativeYear: lad.narrative_year,
       eras: (state.config && state.config.civ_eras) || [],
+      milestones: [
+        { year: rp.self_ref_year || 1e13, label: "universal self-reference" },
+        { year: rp.trans_aware_year || 1e14, label: "trans-universal awareness" },
+      ],
     });
     C.cosmoStrip($("#cosmo-strip"), {
       eras: (state.config && state.config.cosmo_eras) || [],
@@ -184,9 +189,10 @@
     });
     const cos = d.cosmos || {};
     $("#cosmo-note").innerHTML =
-      `Narrative present: <b>${C.fmtYears(cos.cosmic_year || 0)} yr ahead</b> &middot; ` +
+      `Horizon: <b>${C.fmtYears(cos.cosmic_year || 0)} yr ahead</b> &middot; ` +
       `cosmological era: <b>${cos.cosmo_era || "—"}</b> &middot; ` +
-      `aeonic crossovers (CCC): <b>${cos.max_aeon || 0}</b>`;
+      `this universe's fate: <b>${cos.fate_name || "—"}</b> &middot; ` +
+      `conformal crossovers: <b>${cos.max_aeon || 0}</b>`;
 
     // charts — append every card FIRST so the grid has settled each card's
     // final width, then render (avoids the first card being measured while it
@@ -225,12 +231,12 @@
       `<tr>
         <td><span class="civ-dot" style="background:${C.civColor(c.civ)}"></span>Civ ${c.civ}</td>
         <td style="text-align:left">${c.era_level ? c.era_level + ". " + c.era : "—"}</td>
-        <td>${c.nodes}</td><td>${C.fmt(c.K)}</td><td>${C.fmt(c.Phi)}</td>
-        <td>${C.fmt(c.G)}</td><td>${C.fmt(c.I)}</td><td>${c.aeon || 0}</td>
+        <td style="text-align:left">${c.vessel || "—"} <span class="muted">${c.oct || ""}</span></td>
+        <td>${c.nodes}</td><td>${C.fmt(c.K)}</td><td>${C.fmt(c.Phi)}</td><td>${c.aeon || 0}</td>
       </tr>`).join("");
     $("#civ-table").innerHTML =
-      `<table><thead><tr><th>Civilization</th><th style="text-align:left">Era</th><th>Sites</th>
-        <th>K</th><th>Φ</th><th>G</th><th>I</th><th>Aeon</th></tr></thead>
+      `<table><thead><tr><th>Civilization</th><th style="text-align:left">Era</th>
+        <th style="text-align:left">Vessel · OCT</th><th>Sites</th><th>K</th><th>Φ</th><th>Aeon</th></tr></thead>
        <tbody>${rows}</tbody></table>`;
   }
 
@@ -345,6 +351,28 @@
     $("#cosmo-ref").innerHTML = eras.map(e =>
       `<div class="tier"><span class="rng">${fmtE(e.start)}–${fmtE(e.end)} yr</span>
         <span>${e.name}<br><span class="gl-desc">${e.note}</span></span></div>`).join("");
+  }
+  function buildQtr() {
+    const cfg = state.config;
+    $("#qtr-layers").innerHTML = (cfg.qtr_layers || []).map(l =>
+      `<div class="tier"><span class="rng">${l.key}</span>
+        <span>${l.name}<br><span class="gl-desc">${l.answers}</span></span></div>`).join("");
+    $("#qtr-postulates").innerHTML = (cfg.qtr_postulates || []).map(p =>
+      `<div class="tier"><span class="rng">${p.key} ${p.name}</span>
+        <span class="gl-desc">${p.text}</span></div>`).join("");
+    $("#qtr-lambda").innerHTML = (cfg.lambda_l || []).map(v =>
+      `<span class="chip"><b>${v.sym}</b> ${v.meaning}</span>`).join("");
+    $("#oct-ref").innerHTML = (cfg.oct_ladder || []).map(o =>
+      `<div class="tier"><span class="rng">${o.oct} · ${o.class}</span>
+        <span><b>${o.name}</b> <span class="muted">Φ≥${o.Phi_min}</span><br>
+          <span class="gl-desc">${o.reach}</span></span></div>`).join("");
+    $("#nav-ref").innerHTML = (cfg.nav_doors || []).map(d =>
+      `<div class="tier"><span class="rng">${d.axis}${d.phi !== "—" ? " · " + d.phi : ""}</span>
+        <span><b>${d.door}</b><br><span class="gl-desc">${d.text}</span></span></div>`).join("");
+    const fmtPct = w => Math.round(w * 100) + "%";
+    $("#fates-ref").innerHTML = (cfg.cosmic_fates || []).map(f =>
+      `<div class="tier"><span class="rng">${fmtPct(f.weight)}</span>
+        <span><b>${f.name}</b><br><span class="gl-desc">${f.note}</span></span></div>`).join("");
   }
   async function loadModelDoc() {
     try {

@@ -45,8 +45,10 @@ class Params:
     # (like theta in section 3) plus, via the cosmological era, a slow modulation
     # of stellar energy availability.
     cosmic_year0: float = 1.0e5      # years-from-now at t = 0          [X]
-    cosmic_year_end: float = 5.0e11  # years-from-now at t = t_max      [X]
-    narrative_year: float = 5.0e10   # "Presente narrativo" (Image 1)   [S]
+    cosmic_year_end: float = 1.0e14  # years-from-now at t = t_max      [X]
+    narrative_year: float = 5.0e10   # "Presente narrativo" ~50 Gyr     [S]
+    self_ref_year: float = 1.0e13    # universal self-reference horizon [S]
+    trans_aware_year: float = 1.0e14 # possible trans-universal aware.  [S]
 
     # --- population (sections 7) -----------------------------------------
     pop_r: float = 0.55          # intrinsic growth rate            [E]
@@ -144,11 +146,14 @@ class Params:
     phi_A: float = 0.6           # exponent on field knowledge      [S]
     phi_Q: float = 0.3           # exponent on computation          [S]
     phi_E: float = 0.2           # exponent on energy               [S]
-    Phi_max: float = 7.0         # Field-mastery ceiling            [S]
+    Phi_max: float = 7.0         # absolute Field-mastery ceiling   [S]
+    phi_K_gap: float = 1.0       # K-Phi coupling: Phi ceiling ~ K + gap [S]
+    E_gal_phi0: float = 3.0      # Phi where galactic energy unlocks [S]
+    E_field_phi0: float = 4.0    # Phi where Field energy unlocks    [S]
     delta_Phi: float = 0.02      # Field-mastery decay under stress [S]
     sigma_Phi_civ: float = 0.03  # Field-mastery noise              [S]
-    lam_Phi_jump: float = 0.01   # Field breakthrough hazard        [S]
-    dPhi_jump: float = 0.4       # Field breakthrough magnitude     [S]
+    lam_Phi_jump: float = 0.008  # Field breakthrough hazard        [S]
+    dPhi_jump: float = 0.3       # Field breakthrough magnitude     [S]
 
     # --- Field state psi (section 5) -------------------------------------
     D_Phi: float = 0.15          # Field diffusivity                [S]

@@ -93,6 +93,7 @@ def run_snapshot(sim: Simulation) -> Dict:
         K = (np.log10(max(Etot, 1e-9)) - sim.params.kardashev_k0) / sim.params.kardashev_dk
         phi = float(np.max(sim.x[a, nodes, S.PHI]))
         level, era_en, era_it = S.civ_era(K, phi)
+        oct_level, vclass, vname = S.oct_reach(phi)
         civ_table.append({
             "civ": int(a),
             "nodes": int(len(nodes)),
@@ -103,10 +104,12 @@ def run_snapshot(sim: Simulation) -> Dict:
             "era_level": level,
             "era": era_en,
             "era_it": era_it,
+            "oct": oct_level,
+            "vessel": vclass,
+            "vessel_name": vname,
             "A": float(np.mean(sim.x[a, nodes, S.A])),
             "G": float(np.mean(sim.x[a, nodes, S.G])),
             "I": float(np.mean(sim.x[a, nodes, S.I])),
-            "universe": int(sim.universe_idx[a]),
             "aeon": int(sim.aeon_count[a]),
         })
     summary["civ_table"] = civ_table
@@ -135,5 +138,7 @@ def run_snapshot(sim: Simulation) -> Dict:
         "cosmo_era": final.get("cosmo_era", ""),
         "cosmo_era_key": final.get("cosmo_era_key", ""),
         "max_aeon": int(max((sim.aeon_count[a] for a in sim.alive_indices()), default=0)),
+        "fate": sim.cosmic_fate,
+        "fate_name": sim.cosmic_fate_name,
     }
     return summary

@@ -353,6 +353,14 @@
       svg.appendChild(el("path", { d, fill: "none", stroke: `url(#${gid})`, "stroke-width": 2.6, "stroke-linejoin": "round", "stroke-linecap": "round" }));
     }
 
+    // deep-future milestones (universal self-reference, trans-universal awareness)
+    (opts.milestones || []).forEach(ms => {
+      const x = X(ms.year);
+      if (x < m.l - 1 || x > m.l + iw + 1) return;
+      svg.appendChild(el("line", { x1: x, x2: x, y1: m.t, y2: m.t + ih, stroke: "#9085e9", "stroke-width": 1, "stroke-dasharray": "2 3", opacity: 0.75 }));
+      svg.appendChild(el("text", { x: x - 3, y: m.t + ih - 5, "text-anchor": "end", fill: "#9085e9", "font-size": 8.5, transform: `rotate(-90 ${x - 3} ${m.t + ih - 5})` }, ms.label));
+    });
+
     // narrative-present marker
     if (opts.narrativeYear) {
       const x = X(opts.narrativeYear);

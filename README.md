@@ -65,36 +65,56 @@ ens = run_ensemble(Params(), n_runs=100)
 print(ens.probabilities)                         # P(K>=3), P(chronal), ...
 ```
 
-## The deep-time framework (the diagrams)
+## The QTR deep-time framework (single universe, multi-depth)
 
-On top of the raw dynamics the model exposes the **civilizational-evolution
-framework** of the accompanying diagrams:
+The model implements the **QTR** (Quantum Theory of Relativity) deep-time canon of
+[`fopearcano/qtr-v2`](https://github.com/fopearcano/qtr-v2) — copied into
+[`docs/qtr/`](docs/qtr/). QTR treats spacetime as **emergent** and is emphatically
+**single-universe**: everything happens inside *one* physical universe;
+civilizations sail the structured vacuum (the Field) and dive its depths — they do
+**not** travel to other universes.
 
 * **Seven civilizational eras** — `Planetary → Solar → Interstellar → Galactic →
-  Oceanic → Eonic → Chronal` (with their Italian names *Terra contemporanea …
-  Cronale*). An era is read jointly from the continuous Kardashev index **K**
-  (energy mastery) and the Field mastery **Φ**: a civilization enters an era only
-  once **both** its K and Φ thresholds are met (`deeptime/state.py: civ_era`).
-* **A cosmic-time axis** — the nondimensional integration time is mapped
-  log-uniformly onto *years in Earth's future* (Oggi → 10⁶ → … → 5·10¹¹ yr), so a
-  run can be read directly on the deep-time ladder. The **narrative present**
-  sits at 50 billion years.
-* **The cosmological backdrop** — the universe's own ΛCDM lifecycle
-  (Stelliferous → Late-Stelliferous → Degenerate → Black-Hole → Heat-Death). The
-  civilizational narrative occupies a sliver of the Stelliferous era; stellar and
-  galactic energy availability **fades** in later cosmic eras (energy access
-  drives complexity), while the **Field-tapped energy tier persists** — *il Campo
-  è la costante*.
-* **Conformal Cyclic Cosmology (Penrose CCC)** — aeonic transitions are
-  conformal crossovers along a linked sequence of aeons; each civilization tracks
-  its aeon count, with the accessible-universe index cycling with period *P*
-  (§33). This is the model's route past the far-future eras — the "infinity of
-  infinities."
+  Oceanic → Eonic → Chronal` (*Terra contemporanea … Cronale*), read jointly from
+  the Kardashev index **K** (energy) and the Field mastery **Φ**. The **K↔Φ
+  coupling** is the core of the model: deep Field mastery is reserved for powers
+  that also command the energy of their era (Oceanic Φ₄ needs galactic energy
+  K≈3; Eonic/Chronal Φ₅–₆ need the cosmological regime K≈4–5), so energy mastery
+  cannot outrun Field mastery. A representative ensemble mostly culminates in the
+  **Eonic** age; **some reach Chronal**; a few stall lower — Chronal is rare and
+  late (`state.civ_era`).
+* **The Φ₀–Φ₆ Field-mastery ladder** — a single-universe navigation ladder:
+  observation → ER=EPR nonlocal comms → Casimir-corridor sailing → the
+  Idrenes-Bridge dive → kindled seam-wells → cosmological Field integration →
+  universal self-reference. Φ₅ is *not* universe conversion; Φ₆ is *not* routine
+  time-travel.
+* **The Ontological Cantor Tower (OCT)** — a hierarchy of *state-depths within one
+  universe*. Diving deeper shortens the effective Field route (a deeper ship is a
+  faster ship, the Ship-Relative Speed Law), so a civilization's OCT depth reach
+  (tied to Φ) extends how far it can colonize. A **vessel's class** (Crawlers →
+  Bridges → Wanderers → Sovereigns → the Formless) is the deepest OCT rung it can
+  reach (`state.oct_reach`, `oct_depth_index`).
+* **A cosmic-time axis** — integration time is mapped log-uniformly onto *years in
+  Earth's future* (Oggi → 10⁶ → … → 10¹⁴ yr). The **narrative present** sits at the
+  Oceanic age, ≈ 50 Gyr; **universal self-reference** emerges around 10¹³ yr and a
+  possible **trans-universal awareness** (recognition, not travel) near the
+  late-Stelliferous horizon, ≈ 10¹⁴ yr.
+* **The cosmological backdrop** — the ΛCDM lifecycle (Stelliferous →
+  Late-Stelliferous → Degenerate → Black-Hole → Heat-Death). Stellar/galactic
+  energy availability **fades** in later eras while the Field-tapped tier persists
+  — *the Field is the constant*.
+* **Six cosmic fates** — each history samples one ultimate fate for this one
+  universe from an observationally-weighted prior (Heat Death 45%, Penrose CCC 25%,
+  Big Rip / Big Bounce 10% each, Big Crunch / Vacuum Decay 5% each). Penrose CCC is
+  the only recurrent continuation; **conformal aeon crossovers** occur only in
+  CCC-fate universes — a possible continuation of *this* universe's lifecycle, not
+  travel between parallel universes.
 
 The web **History** tab leads with the *Deep-Time Ladder* chart (civilizational
-level vs cosmic time, matching the reference diagram) and a cosmological-context
-strip; the **The Model** tab lists the era ladder, Field tiers and cosmological
-eras.
+level vs cosmic time) and a cosmological-context strip; the **The Model** tab
+documents the QTR four-layer stack (QTR / ΛL / PIIU / NAV), the four postulates,
+the ΛL five-valued logic, the OCT tower and vessel classes, the three navigation
+doors, and the cosmic fates.
 
 ## What the model produces
 
@@ -152,8 +172,12 @@ examples/, tests/
 | §29 Archival integrity | `continuous_drift` (Z) |
 | §30 Collapse hazard & jump | `_sample_collapse`, `_apply_collapse` |
 | §31–32 Fragmentation & merger | `_sample_fragmentation`, `_sample_merger` |
-| §33–34 Aeonic structure & gates (Penrose CCC crossovers) | `_sample_aeonic`, `aeon_count` |
+| §33–34 Penrose-CCC conformal crossovers (CCC-fate only) | `_sample_aeonic`, `aeon_count` |
 | Civilizational era ladder (K × Φ → 7 eras) | `state.civ_era`, `CIV_ERAS` |
+| K↔Φ coupling (energy tiers gated by Φ; Φ ceiling ~ K) | `continuous_drift` (`gal_gate`, `field_gate`, `phi_max_eff`) |
+| Ontological Cantor Tower & vessel classes | `state.oct_reach`, `oct_depth_index`; route-shortening in `_colonize` |
+| Φ₀–Φ₆ single-universe Field ladder | `state.FIELD_TIERS` |
+| Six cosmic fates (sampling prior) | `state.COSMIC_FATES`, `Simulation.cosmic_fate` |
 | Cosmic-time axis & cosmological eras | `Simulation.cosmic_years`, `state.cosmo_era`, `cosmo_energy_factor` |
 | §37 Closed-universe escape coherence Ω | `continuous_drift` (Omega) |
 | §39 Constraints | `enforce_constraints` |
